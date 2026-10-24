@@ -1,0 +1,472 @@
+import { Article, Author, BeatCategory, NotificationItem, UserProfile, WireDispatch } from '../types';
+
+export const MOCK_AUTHORS: Author[] = [
+  {
+    id: 'author-1',
+    name: 'Helena Vance',
+    role: 'Chief Technology Editor & AI Bureau Lead',
+    beat: 'AI & Frontier Systems',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&q=80',
+    bio: 'Former FT Global Technology Correspondent. Investigates compute clusters, foundation model governance, and semiconductor geopolitics.',
+    articlesCount: 48,
+    followersCount: 14200,
+  },
+  {
+    id: 'author-2',
+    name: 'Marcus Sterling',
+    role: 'Managing Editor, Venture Capital & Private Markets',
+    beat: 'Global Venture & LP Capital',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80',
+    bio: 'Covering institutional liquidity, sovereign wealth syndicates, and late-stage tech valuation models across North America and Europe.',
+    articlesCount: 62,
+    followersCount: 18900,
+  },
+  {
+    id: 'author-3',
+    name: 'Dr. Kenji Takahashi',
+    role: 'Senior Defense & DeepTech Analyst',
+    beat: 'DeepTech & Defense',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80',
+    bio: 'Specialist in dual-use aerospace, quantum sensing, and autonomous robotics capital flows between NATO allies and Indo-Pacific partners.',
+    articlesCount: 35,
+    followersCount: 11400,
+  },
+  {
+    id: 'author-4',
+    name: 'Claire Dupont',
+    role: 'European Tech & Energy Transition Lead',
+    beat: 'Climate & Clean Infrastructure',
+    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&auto=format&fit=crop&q=80',
+    bio: 'Based in Paris and Berlin. Tracks gigafactory financing, grid scale storage, and clean molecule ventures.',
+    articlesCount: 29,
+    followersCount: 9600,
+  },
+];
+
+export const MOCK_BEATS: BeatCategory[] = [
+  {
+    id: 'beat-ai',
+    slug: 'ai-frontier',
+    name: 'AI & Frontier Systems',
+    description: 'Foundation model economics, training cluster cap-ex, autonomous reasoning agents, and developer tooling pipelines.',
+    leadEditor: 'Helena Vance',
+    articlesCount: 142,
+    subscribersCount: 28400,
+    accentColor: 'emerald',
+    iconName: 'Cpu',
+  },
+  {
+    id: 'beat-vc',
+    slug: 'venture-capital',
+    name: 'Global Venture & LP Capital',
+    description: 'Sovereign wealth fund allocations, GP return dispersion, continuation vehicles, and venture debt dynamics.',
+    leadEditor: 'Marcus Sterling',
+    articlesCount: 189,
+    subscribersCount: 34100,
+    accentColor: 'amber',
+    iconName: 'TrendingUp',
+  },
+  {
+    id: 'beat-deeptech',
+    slug: 'deeptech-defense',
+    name: 'DeepTech & Defense Systems',
+    description: 'Dual-use hardware, aerospace procurement, quantum communication networks, and critical mineral supply chains.',
+    leadEditor: 'Dr. Kenji Takahashi',
+    articlesCount: 88,
+    subscribersCount: 19500,
+    accentColor: 'indigo',
+    iconName: 'Shield',
+  },
+  {
+    id: 'beat-climate',
+    slug: 'climate-infrastructure',
+    name: 'Climate & Clean Infrastructure',
+    description: 'Nuclear SMR financing, long-duration battery chemistry, green hydrogen economics, and grid modernization projects.',
+    leadEditor: 'Claire Dupont',
+    articlesCount: 94,
+    subscribersCount: 17800,
+    accentColor: 'teal',
+    iconName: 'Zap',
+  },
+  {
+    id: 'beat-secondaries',
+    slug: 'secondary-markets',
+    name: 'Secondary Markets & Liquidity',
+    description: 'Employee share tenders, structured discount pricing, pre-IPO liquidity pools, and private company valuation benchmarks.',
+    leadEditor: 'Marcus Sterling',
+    articlesCount: 67,
+    subscribersCount: 22300,
+    accentColor: 'rose',
+    iconName: 'RefreshCw',
+  },
+  {
+    id: 'beat-europe',
+    slug: 'european-tech',
+    name: 'European & Cross-Border Ecosystems',
+    description: 'Regulatory headwinds (AI Act), sovereign compute initiatives, and cross-border M&A between London, Paris, and Zurich.',
+    leadEditor: 'Claire Dupont',
+    articlesCount: 112,
+    subscribersCount: 16400,
+    accentColor: 'blue',
+    iconName: 'Globe',
+  },
+];
+
+export const MOCK_WIRE_DISPATCHES: WireDispatch[] = [
+  {
+    id: 'wire-1',
+    timestamp: '2026-09-03T12:14:00Z',
+    timeAgo: '8m ago',
+    beat: 'AI & Frontier Systems',
+    headline: 'Anthropic closes $4.2B Series F led by sovereign consortium with dedicated gigawatt compute commitment in Scandinavia',
+    source: 'GVW Wire Desk',
+    impactLevel: 'critical',
+  },
+  {
+    id: 'wire-2',
+    timestamp: '2026-09-03T11:45:00Z',
+    timeAgo: '37m ago',
+    beat: 'Global Venture & LP Capital',
+    headline: 'Abu Dhabi Investment Authority allocates $1.8B to specialized secondaries fund targeting discounted tech unicorns',
+    source: 'Venture Liquidity Desk',
+    impactLevel: 'high',
+  },
+  {
+    id: 'wire-3',
+    timestamp: '2026-09-03T10:30:00Z',
+    timeAgo: '1h ago',
+    beat: 'DeepTech & Defense',
+    headline: 'DARPA selects two stealth hardware startups for hypersonic thermal shielding development grants',
+    source: 'Defense Procurement Beat',
+    impactLevel: 'standard',
+  },
+  {
+    id: 'wire-4',
+    timestamp: '2026-09-03T09:15:00Z',
+    timeAgo: '3h ago',
+    beat: 'Climate & Clean Infrastructure',
+    headline: 'Next-gen fusion reactor developer Commonwealth Systems signs 20-year power purchase memorandum with hyperscaler',
+    source: 'Clean Energy Bureau',
+    impactLevel: 'high',
+  },
+];
+
+export const MOCK_ARTICLES: Article[] = [
+  {
+    id: 'art-1',
+    slug: 'the-great-compute-repricing-ai-models-unit-economics',
+    title: 'The Great Compute Repricing: Inside the Battle for Sub-Cent Token Margin',
+    subtitle: 'As hyperscaler capex surpasses $220B annually, proprietary benchmarking reveals the steep unit-economic divide between inference-first architectures and legacy monolithic giants.',
+    beat: 'AI & Frontier Systems',
+    beatSlug: 'ai-frontier',
+    format: 'deep_dive',
+    accessTier: 'premium',
+    author: MOCK_AUTHORS[0],
+    publishedAt: 'September 2, 2026',
+    readTimeMinutes: 14,
+    featured: true,
+    trendingScore: 98,
+    coverImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80',
+    tags: ['AI Infrastructure', 'Unit Economics', 'NVIDIA Blackwell', 'Inference Scaling', 'Hyperscalers'],
+    summary: 'A confidential leak of hyperscaler inferencing costs and margin profiles shows how custom ASIC clusters and speculative decoding are rewriting foundation model gross margins from 32% to 74%.',
+    keyInsights: [
+      'Inference now accounts for 68% of total generative AI compute expenditure, shifting capital away from brute-force pretraining.',
+      'Sovereign AI datacenters in the GCC and Nordic regions are capturing over 35% of high-density interconnect contracts.',
+      'Software optimizations (FP4 quantization and structured pruning) reduced token serving costs by 4.2x in Q3 2026.',
+      'Venture firms with heavy exposure to monolithic API wrappers face severe compression unless proprietary vertical data moats exist.'
+    ],
+    contentParagraphs: [
+      'For the past thirty months, the global venture community operated on a singular, unexamined catechism: scale cures all deficits. If an organization possessed sufficient capital to procure Blackwell B200 clusters, competitive moats would inevitably crystallize through parameter sheer volume.',
+      'That thesis collapsed this quarter. Internal financial disclosures and supply chain procurement logs obtained exclusively by Global Venture Watch reveal that inferencing unit economics—not training cluster size—have become the decisive dividing line between sustainable platform ecosystems and venture-subsidized compute burn.',
+      'Across six tier-one foundation model providers, the blended cost to deliver one million tokens of multi-modal reasoning has plunged from $18.40 in late 2024 to an astonishing $0.42 today. Yet the capital expenditure required to provision that low-latency throughput requires upfront balance sheet commitments that only three sovereign-backed conglomerates can underwrite without secondary dilution.',
+      'In our four-month investigation spanning Silicon Valley chip designers, Dublin datacenter operators, and Tokyo semiconductor foundries, GVW analyzed the confidential gross margin trajectories of 42 high-growth artificial intelligence enterprises. The findings demonstrate an unforgiving divergence in platform resilience.'
+    ],
+    pullQuote: {
+      quote: 'The market mistook a hardware scarcity bubble for a durable software monopoly. Now that hardware latency has dropped by an order of magnitude, the real value accrues to the operational orchestration layer.',
+      attribution: 'Helena Vance, Chief Technology Editor'
+    },
+    metrics: [
+      { label: 'Avg Inference Cost / 1M Tokens', value: '$0.42', sublabel: '-97.7% since 2024' },
+      { label: 'Global Data Center CapEx', value: '$224B', sublabel: 'Annualized 2026 pace' },
+      { label: 'Median Gross Margin (Optimized)', value: '74.2%', sublabel: 'Up from 34% baseline' },
+    ],
+    views: 48920,
+    likes: 1840,
+    bookmarksCount: 924,
+    comments: [
+      {
+        id: 'c-1',
+        authorName: 'David Chen',
+        authorRole: 'General Partner, Horizon DeepTech',
+        authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80',
+        timestamp: '3 hours ago',
+        content: 'Helena’s breakdown of speculative decoding impact on ASIC utilization matches exactly what our portfolio founders are seeing. Monolithic API reselling is officially dead.',
+        likes: 42,
+      },
+      {
+        id: 'c-2',
+        authorName: 'Evelyn Morales',
+        authorRole: 'Head of Infrastructure Allocation, Temasek',
+        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
+        timestamp: '5 hours ago',
+        content: 'The geographic reallocation toward Scandinavian geothermal power for 500MW+ clusters is the most underreported geopolitical shift of the decade.',
+        likes: 29,
+      }
+    ]
+  },
+  {
+    id: 'art-2',
+    slug: 'sovereign-wealth-and-the-liquidity-freeze',
+    title: 'The Sovereign Arbitrage: How Middle Eastern Capital is Rewriting Venture Cap Tables',
+    subtitle: 'With US pension funds retrenching from illiquid assets, Gulf sovereign wealth funds are enforcing structured liquidation preferences and 30% GP co-investment mandates.',
+    beat: 'Global Venture & LP Capital',
+    beatSlug: 'venture-capital',
+    format: 'market_report',
+    accessTier: 'premium',
+    author: MOCK_AUTHORS[1],
+    publishedAt: 'September 1, 2026',
+    readTimeMinutes: 11,
+    featured: false,
+    trendingScore: 92,
+    coverImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80',
+    tags: ['LP Allocation', 'Sovereign Wealth', 'Venture Liquidity', 'DPI', 'Secondary Vehicles'],
+    summary: 'An investigative report into how sovereign funds in Riyadh and Abu Dhabi are negotiating bespoke liquidity guarantees in exchange for anchor check disbursements to tier-one Silicon Valley partnerships.',
+    keyInsights: [
+      'Over 41% of all commitments to venture funds greater than $1B in 2026 originated from the GCC sovereign cluster.',
+      'Institutional LPs are requiring GPs to demonstrate net DPI (Distributed to Paid-In Capital) above 1.1x before honoring re-up allocations.',
+      'Continuation vehicles have grown 135% year-over-year as private tech unicorns postpone public listings.',
+    ],
+    contentParagraphs: [
+      'The traditional fundraising roadshow has relocated its center of gravity. For decades, general partners hopped shuttles between CalPERS in Sacramento, MassPRIM in Boston, and Canadian pensions in Toronto.',
+      'Today, the flight manifests look entirely different. In private terminals across Riyadh, Abu Dhabi, and Doha, managing directors are sitting across from investment officers who hold both unprecedented capital reserves and an increasingly assertive governance agenda.',
+      'This is no longer passive limited partnership capital. In exchange for nine-figure anchor checks, sovereign allocators are extracting unprecedented terms: localized engineering headquarters, mandatory domestic talent pipelines, and structured downside protections that traditional pension funds never dreamed of demanding.'
+    ],
+    views: 31200,
+    likes: 980,
+    bookmarksCount: 640,
+    comments: [
+      {
+        id: 'c-3',
+        authorName: 'Arthur Pendelton',
+        authorRole: 'Managing Director, Cambridge Associates',
+        authorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&auto=format&fit=crop&q=80',
+        timestamp: '1 day ago',
+        content: 'This piece captures the exact sentiment in our LP committees. The traditional 10-year blind pool is facing structural obsolescence.',
+        likes: 18,
+      }
+    ]
+  },
+  {
+    id: 'art-3',
+    slug: 'the-defense-tech-dual-use-procurement-labyrinth',
+    title: 'Beyond the Hype: The Realities of Dual-Use Defense Tech Procurement',
+    subtitle: 'Billions poured into autonomous drone and cyber defense startups, but getting on the DoD Program of Record remains a lethal obstacle course for software-first founders.',
+    beat: 'DeepTech & Defense',
+    beatSlug: 'deeptech-defense',
+    format: 'deep_dive',
+    accessTier: 'free',
+    author: MOCK_AUTHORS[2],
+    publishedAt: 'August 30, 2026',
+    readTimeMinutes: 9,
+    featured: false,
+    trendingScore: 84,
+    coverImage: 'https://images.unsplash.com/photo-1517976487507-580371e72b49?w=1200&auto=format&fit=crop&q=80',
+    tags: ['Defense Tech', 'DoD Procurement', 'Autonomy', 'National Security', 'SBIR Phase III'],
+    summary: 'A forensic analysis of the "Valley of Death" in defense tech venture investing, highlighting the 14 companies that successfully navigated from prototype to recurring multi-year government contract.',
+    keyInsights: [
+      'Only 6% of venture-backed defense startups have transitioned from SBIR Phase II to an operational Program of Record contract.',
+      'Hardware margins on militarized drones face intense price competition from commercial off-the-shelf derivatives.',
+      'Defense innovation hubs (DIU and DARPA) are accelerating agile software deployment across allied naval operations.'
+    ],
+    contentParagraphs: [
+      'In the pristine conference rooms of Sand Hill Road, "defense technology" is celebrated as the new safe haven for venture capital. Amid tech sector volatility, the defense budget represents an apparently inexhaustible $850B pool of recurring public revenue.',
+      'Yet on the ground at Wright-Patterson Air Force Base and Naval Air Systems Command, the reality is starkly distinct. Software engineers pitching rapid iterative sprints confront a procurement bureaucracy structured around fifty-year weapon lifecycle systems and rigorous Federal Acquisition Regulations (FAR).'
+    ],
+    views: 24100,
+    likes: 810,
+    bookmarksCount: 420,
+    comments: []
+  },
+  {
+    id: 'art-4',
+    slug: 'european-sovereign-ai-clouds-gaia-x-reckoning',
+    title: 'The European Sovereign Cloud Dilemma: Between Regulatory Autonomy and American Hyperscalers',
+    subtitle: 'With the EU AI Act in full enforcement, European enterprises are caught between strict compliance mandates and the undeniable raw performance of US-dominated compute networks.',
+    beat: 'European & Cross-Border Ecosystems',
+    beatSlug: 'european-tech',
+    format: 'executive_interview',
+    accessTier: 'registered',
+    author: MOCK_AUTHORS[3],
+    publishedAt: 'August 28, 2026',
+    readTimeMinutes: 8,
+    featured: false,
+    trendingScore: 78,
+    coverImage: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&auto=format&fit=crop&q=80',
+    tags: ['EU AI Act', 'Sovereignty', 'Mistral', 'Data Privacy', 'Cloud Infrastructure'],
+    summary: 'Exclusive interview with European digital sovereignty ministers and top founders navigating compliance burdens while attempting to build competitive continental AI giants.',
+    keyInsights: [
+      'European enterprise AI adoption grew 28% year-over-year, but 72% of workloads still execute on US-owned infrastructure.',
+      'Mistral and its ecosystem partners are pioneering localized on-premise frontier models for regulated banking and healthcare.',
+    ],
+    contentParagraphs: [
+      'In the corridors of Brussels, digital sovereignty was once an abstract philosophical aspiration. Today, as fine schedules under the EU AI Act take effect, that debate has shifted directly into corporate boardrooms across Frankfurt, Milan, and Stockholm.'
+    ],
+    views: 18900,
+    likes: 620,
+    bookmarksCount: 310,
+    comments: []
+  },
+  {
+    id: 'art-5',
+    slug: 'secondary-share-discount-compression-unicorns',
+    title: 'The Private Share Squeeze: Secondary Valuations Tighten to 18-Month Highs',
+    subtitle: 'Private market platforms report a dramatic compression in secondary share discounts, driven by institutional buyers seeking early stakes in cash-flow positive enterprise software.',
+    beat: 'Secondary Markets & Liquidity',
+    beatSlug: 'secondary-markets',
+    format: 'market_report',
+    accessTier: 'premium',
+    author: MOCK_AUTHORS[1],
+    publishedAt: 'August 27, 2026',
+    readTimeMinutes: 10,
+    featured: false,
+    trendingScore: 88,
+    coverImage: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&auto=format&fit=crop&q=80',
+    tags: ['Secondaries', 'Tender Offers', 'Private Liquidity', 'Valuation Multiples', 'Cap Tables'],
+    summary: 'Secondary transactions data across Forge, Carta, and Zanbato reveals an average discount of just 12% against previous primary funding rounds, down from 48% in 2024.',
+    keyInsights: [
+      'Tender offers structured by company management represent 64% of all private liquidity events in 2026.',
+      'SaaS multiples on private secondary markets have rebounded to 11.4x NTM revenue for top-quartile ARR growth.',
+    ],
+    contentParagraphs: [
+      'For three painful years following the 2021 market peak, the secondary market for private technology shares resembled a distressed asset liquidation sale. Former unicorns saw their common stock trade at punishing 60% discounts to previous preferred round valuations.'
+    ],
+    views: 29400,
+    likes: 940,
+    bookmarksCount: 580,
+    comments: []
+  },
+  {
+    id: 'art-6',
+    slug: 'fusion-and-clean-firm-power-venture-syndicates',
+    title: 'Clean Firm Power: Why Hyperscalers are Becoming Venture Backers for Nuclear SMRs',
+    subtitle: 'Unable to satisfy 24/7 clean energy pledges through intermittent solar and wind alone, cloud titans are directly capitalizing advanced fission and fusion startups.',
+    beat: 'Climate & Clean Infrastructure',
+    beatSlug: 'climate-infrastructure',
+    format: 'case_study',
+    accessTier: 'registered',
+    author: MOCK_AUTHORS[3],
+    publishedAt: 'August 25, 2026',
+    readTimeMinutes: 12,
+    featured: false,
+    trendingScore: 79,
+    coverImage: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&auto=format&fit=crop&q=80',
+    tags: ['Nuclear Energy', 'SMRs', 'Clean Power', 'Data Centers', 'Energy Transition'],
+    summary: 'Deep dive into the joint power purchase agreements and equity syndicates structured between cloud hyperscalers and next-generation nuclear reactor developers.',
+    keyInsights: [
+      'Data center electricity consumption is projected to consume 9.2% of total US grid capacity by 2028.',
+      'Three advanced nuclear startups secured over $1.4B in blended debt-equity financing guaranteed by hyperscaler offtake contracts.'
+    ],
+    contentParagraphs: [
+      'The clean energy transition has met the immovable physical reality of the artificial intelligence boom. While software algorithms can be scaled instantaneously across global networks, powering the transformer blocks powering those calculations demands uninterrupted electrical baseload.'
+    ],
+    views: 21500,
+    likes: 710,
+    bookmarksCount: 440,
+    comments: []
+  }
+];
+
+export const INITIAL_USER: UserProfile = {
+  id: 'user-001',
+  name: 'Walter Sterling',
+  email: 'walter.sterling@horizoncapital.com',
+  role: 'registered',
+  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
+  title: 'Principal Investor',
+  organization: 'Horizon Capital Partners',
+  followedBeats: ['beat-ai', 'beat-vc'],
+  followedAuthors: ['author-1', 'author-2'],
+  savedArticles: ['art-1', 'art-3'],
+  readingHistory: [
+    {
+      articleId: 'art-1',
+      progressPercent: 45,
+      lastReadAt: 'Today, 8:30 AM',
+    },
+    {
+      articleId: 'art-2',
+      progressPercent: 100,
+      lastReadAt: 'Yesterday',
+    }
+  ],
+  subscription: {
+    tier: 'GVW Insider',
+    status: 'active',
+    cycle: 'annual',
+    renewalDate: 'November 14, 2026',
+    amount: 290,
+  },
+  notificationsCount: 3,
+};
+
+export const MOCK_NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: 'notif-1',
+    type: 'breaking_wire',
+    title: 'Anthropic closes $4.2B Series F with gigawatt compute commitment',
+    description: 'Exclusive dispatch from Helena Vance on the AI & Frontier Systems beat.',
+    timestamp: '12m ago',
+    read: false,
+    articleId: 'art-1',
+  },
+  {
+    id: 'notif-2',
+    type: 'followed_beat',
+    title: 'New Market Report in Global Venture & LP Capital',
+    description: 'Marcus Sterling published "The Sovereign Arbitrage: Middle Eastern Capital Rewriting Cap Tables".',
+    timestamp: '2h ago',
+    read: false,
+    articleId: 'art-2',
+  },
+  {
+    id: 'notif-3',
+    type: 'billing',
+    title: 'Annual Membership Confirmed',
+    description: 'Your GVW Insider annual subscription invoice #GVW-88219 is now available.',
+    timestamp: '1d ago',
+    read: false,
+  },
+  {
+    id: 'notif-4',
+    type: 'system',
+    title: 'New Feature: The Wire Real-Time Dispatches',
+    description: 'Track breaking funding rounds, sovereign allocations, and regulatory updates in real time.',
+    timestamp: '3d ago',
+    read: true,
+  }
+];
+
+export const MOCK_PLATFORM_ANALYTICS = {
+  mrr: 148200,
+  mrrGrowth: '+14.2% MoM',
+  activePaidSubscribers: 4120,
+  subscribersGrowth: '+320 this week',
+  freeToPaidConversionRate: 4.6,
+  churnRate: 1.8,
+  averageReadingCompletion: '68%',
+  totalMonthlyViews: 1420000,
+  beatRankings: [
+    { beat: 'AI & Frontier Systems', share: '38%', revenueContribution: '$56,300' },
+    { beat: 'Global Venture & LP Capital', share: '31%', revenueContribution: '$45,900' },
+    { beat: 'Secondary Markets & Liquidity', share: '14%', revenueContribution: '$20,700' },
+    { beat: 'DeepTech & Defense Systems', share: '10%', revenueContribution: '$14,800' },
+    { beat: 'Climate & Clean Infrastructure', share: '7%', revenueContribution: '$10,500' },
+  ],
+  funnelMetrics: {
+    anonymousVisitors: 280000,
+    registeredFreeAccounts: 29400,
+    paywallHitsMonthly: 84500,
+    checkoutStarts: 6200,
+    newPaidConversions: 3890,
+  }
+};

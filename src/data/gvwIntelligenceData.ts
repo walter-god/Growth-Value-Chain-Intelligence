@@ -1,0 +1,1385 @@
+import { 
+  MacroIndicator, 
+  ValueChain, 
+  CompanyRecord, 
+  InvestmentOpportunity, 
+  WealthMetric, 
+  ResearchReport, 
+  TanzaniaRegion,
+  UserProfile
+} from '../types';
+
+export const GVW_USER_DEFAULT: UserProfile = {
+  id: 'usr-exec-01',
+  name: 'Amara Mtwange',
+  email: 'a.mtwange@capital-advisors.tz',
+  organization: 'East Africa Infrastructure Partners',
+  title: 'Managing Partner & Head of Research',
+  role: 'pro',
+  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80',
+  followedChains: ['cashew', 'mining-gold', 'natural-gas'],
+  savedReports: ['rep-2026-outlook', 'rep-agri-monitor'],
+  savedOpportunities: ['opp-mtwara-cashew', 'opp-dar-coldchain'],
+  accessExpires: 'December 2027'
+};
+
+export const MACRO_INDICATORS: MacroIndicator[] = [
+  {
+    id: 'ind-gdp',
+    name: 'Real GDP Growth Rate',
+    code: 'GDP_GROWTH',
+    category: 'Macro',
+    value: '6.0%',
+    numericValue: 6.0,
+    unit: 'annual % change',
+    trend: 'up',
+    changeStr: '+0.8% vs prior year',
+    period: 'Q2 2026 / Annualized',
+    source: 'National Bureau of Statistics (NBS) & Bank of Tanzania',
+    historical: [
+      { period: '2021', value: 4.9 },
+      { period: '2022', value: 4.7 },
+      { period: '2023', value: 5.1 },
+      { period: '2024', value: 5.4 },
+      { period: '2025', value: 5.7 },
+      { period: '2026 (Est)', value: 6.0 },
+    ],
+    forecast2026: '6.2% projected for FY2026/27 on SGR rail and hydropower commissioning',
+    description: 'Driven by heavy public infrastructure investments (SGR railway, Julius Nyerere Hydropower 2,115 MW), expansion in mining, agriculture, and construction.'
+  },
+  {
+    id: 'ind-cpi',
+    name: 'Headline Inflation (CPI)',
+    code: 'INFLATION_CPI',
+    category: 'Macro',
+    value: '3.2%',
+    numericValue: 3.2,
+    unit: 'annual % change',
+    trend: 'down',
+    changeStr: '-0.3% vs Q1',
+    period: 'July 2026',
+    source: 'Bank of Tanzania (BoT)',
+    historical: [
+      { period: '2021', value: 4.2 },
+      { period: '2022', value: 4.8 },
+      { period: '2023', value: 3.8 },
+      { period: '2024', value: 3.5 },
+      { period: '2025', value: 3.3 },
+      { period: '2026', value: 3.2 },
+    ],
+    forecast2026: 'Target band 3.0% - 5.0% maintained throughout 2026/27',
+    description: 'One of the most stable inflation environments in Sub-Saharan Africa, underpinned by disciplined central bank policy and bumper food harvests.'
+  },
+  {
+    id: 'ind-fx',
+    name: 'Exchange Rate (USD / TZS)',
+    code: 'FX_USDTZS',
+    category: 'Monetary',
+    value: '2,650',
+    numericValue: 2650,
+    unit: 'TZS per 1 USD',
+    trend: 'stable',
+    changeStr: 'Interbank midpoint',
+    period: 'Current Daily Wire',
+    source: 'Bank of Tanzania Interbank FX Market',
+    historical: [
+      { period: '2021', value: 2305 },
+      { period: '2022', value: 2320 },
+      { period: '2023', value: 2450 },
+      { period: '2024', value: 2580 },
+      { period: '2025', value: 2630 },
+      { period: '2026', value: 2650 },
+    ],
+    forecast2026: 'Gradual manageable adjustment supported by BoT gold buying reserves',
+    description: 'Supported by central bank gold reserve purchases, record tourism receipts ($3.4B+), and rising mining exports.'
+  },
+  {
+    id: 'ind-fdi',
+    name: 'Foreign Direct Investment (FDI)',
+    code: 'FDI_FLOWS',
+    category: 'External',
+    value: '$1.45B',
+    numericValue: 1450,
+    unit: 'USD Millions (Annual)',
+    trend: 'up',
+    changeStr: '+18.4% year-on-year',
+    period: '2025/2026 Trailing',
+    source: 'Tanzania Investment Centre (TIC) & UNCTAD',
+    historical: [
+      { period: '2021', value: 920 },
+      { period: '2022', value: 1050 },
+      { period: '2023', value: 1180 },
+      { period: '2024', value: 1290 },
+      { period: '2025', value: 1380 },
+      { period: '2026', value: 1450 },
+    ],
+    forecast2026: '$1.8B+ pipeline triggered by TIC one-stop electronic clearance',
+    description: 'Strong inflows targeting industrial manufacturing, renewable energy, port logistics, commercial agriculture, and minerals processing.'
+  },
+  {
+    id: 'ind-cbr',
+    name: 'Central Bank Rate (CBR)',
+    code: 'POLICY_RATE',
+    category: 'Monetary',
+    value: '6.00%',
+    numericValue: 6.0,
+    unit: '% per annum',
+    trend: 'stable',
+    changeStr: 'Unchanged at Q2 MPC Meeting',
+    period: 'July 2026',
+    source: 'Monetary Policy Committee, BoT',
+    historical: [
+      { period: 'Q1 2024', value: 5.50 },
+      { period: 'Q2 2024', value: 6.00 },
+      { period: 'Q4 2024', value: 6.00 },
+      { period: 'Q2 2025', value: 6.00 },
+      { period: 'Q4 2025', value: 6.00 },
+      { period: 'Q2 2026', value: 6.00 },
+    ],
+    description: 'Price-based monetary policy framework stabilizing interbank liquidity while anchoring domestic private sector lending.'
+  },
+  {
+    id: 'ind-debt',
+    name: 'Public Debt to GDP',
+    code: 'DEBT_TO_GDP',
+    category: 'Fiscal',
+    value: '37.8%',
+    numericValue: 37.8,
+    unit: '% of Nominal GDP',
+    trend: 'stable',
+    changeStr: 'Sustainable / Low Risk of Debt Distress',
+    period: 'FY 2025/26',
+    source: 'Ministry of Finance & Planning / IMF DSA Review',
+    historical: [
+      { period: '2021', value: 36.5 },
+      { period: '2022', value: 37.2 },
+      { period: '2023', value: 38.1 },
+      { period: '2024', value: 38.4 },
+      { period: '2025', value: 37.9 },
+      { period: '2026', value: 37.8 },
+    ],
+    description: 'Prudential threshold is 55% under EAC convergence criteria; Tanzania remains rated at low risk of debt distress.'
+  },
+  {
+    id: 'ind-trade',
+    name: 'Annual Merchandise Exports',
+    code: 'TRADE_EXPORTS',
+    category: 'External',
+    value: '$8.20B',
+    numericValue: 8200,
+    unit: 'USD Millions',
+    trend: 'up',
+    changeStr: '+12.1% YoY growth',
+    period: '2025/26 Annual',
+    source: 'Tanzania Revenue Authority (TRA)',
+    historical: [
+      { period: '2021', value: 6350 },
+      { period: '2022', value: 6820 },
+      { period: '2023', value: 7200 },
+      { period: '2024', value: 7650 },
+      { period: '2025', value: 7920 },
+      { period: '2026', value: 8200 },
+    ],
+    description: 'Gold ($3.1B), traditional agricultural cash crops (cashew, coffee, tobacco, cotton), and manufactured goods to EAC and SADC regions.'
+  },
+  {
+    id: 'ind-pop',
+    name: 'Population & Demographic Dividend',
+    code: 'DEMOGRAPHICS',
+    category: 'Demographics',
+    value: '67.4M',
+    numericValue: 67.4,
+    unit: 'Total Population (Median age 18.2)',
+    trend: 'up',
+    changeStr: '+2.9% annual growth',
+    period: '2026 Census Projection',
+    source: 'NBS National Census Data',
+    historical: [
+      { period: '2015', value: 51.5 },
+      { period: '2018', value: 55.8 },
+      { period: '2020', value: 58.9 },
+      { period: '2022', value: 61.7 },
+      { period: '2024', value: 64.5 },
+      { period: '2026', value: 67.4 },
+    ],
+    description: 'Rapidly urbanizing labor force creating domestic consumer demand for FMCG, processed foods, housing, and financial services.'
+  }
+];
+
+export const VALUE_CHAINS: ValueChain[] = [
+  {
+    id: 'vc-cashew',
+    slug: 'cashew',
+    name: 'Cashew Value Chain',
+    sector: 'Agriculture',
+    subSector: 'Tree Crops & Nut Processing',
+    tagline: 'Farmer → Aggregator → Processor → Exporter → International Buyer',
+    annualProduction: '320,000 Metric Tons (Raw Cashew Nuts - RCN)',
+    marketValueUsd: '$480 Million (Raw) → $1.1 Billion (Full Kernel Potential)',
+    exportValueUsd: '$365 Million',
+    employmentEstimated: '650,000+ smallholder farming households & factory workers',
+    keyRegions: ['Mtwara', 'Lindi', 'Ruvuma', 'Coast (Pwani)', 'Tanga'],
+    topDestinations: [
+      { market: 'India (Raw Cashew Nuts for re-processing)', share: '62%' },
+      { market: 'Vietnam (RCN Processing)', share: '24%' },
+      { market: 'United States (Kernels direct)', share: '7%' },
+      { market: 'European Union (High-grade organic kernels)', share: '5%' },
+      { market: 'Regional EAC / Domestic', share: '2%' }
+    ],
+    nodes: [
+      {
+        id: 'node-csh-1',
+        stageName: '01. Smallholder Farmers',
+        order: 1,
+        roleDescription: 'Over 300,000 family farms cultivate cashew trees, managing seasonal harvesting, sun drying, and initial farmgate sorting.',
+        majorPlayers: ['Mtwara Smallholder Associations', 'Lindi Cashew Co-ops', 'Ruvuma Farming Unions'],
+        benchmarkPrice: 'TZS 2,000 - 2,400 / kg ($0.75 - $0.90 / kg) at farmgate auction',
+        averageMargin: '18% - 24% net operating profit margin on seasonal yield',
+        processingCapacity: 'N/A (Primary farm production: ~320k tons raw)',
+        geographicHotspots: ['Tandahimba (Mtwara)', 'Masasi', 'Nachingwea (Lindi)', 'Tunduru (Ruvuma)'],
+        bottlenecks: [
+          'Limited access to subsidized sulfur dust and organic fungicides',
+          'Aging tree stocks requiring grafted, high-yielding clonal seedlings',
+          'High post-harvest moisture fluctuations prior to warehouse intake'
+        ],
+        investmentOpportunity: 'Large-scale commercial cashew plantation nursery (clonal variety grafting with 3x yield) and drip-irrigated pilot estates.'
+      },
+      {
+        id: 'node-csh-2',
+        stageName: '02. Aggregators & Primary Societies (AMCOS)',
+        order: 2,
+        roleDescription: 'Agricultural Marketing Cooperative Societies (AMCOS) collect, inspect, bag (80kg jute bags), and register harvest into the Warehouse Receipt System (WRS).',
+        majorPlayers: ['MAMCU (Masasi & Mtwara Co-op Union)', 'ILULU Co-op Union', 'TAMCU (Tunduru Union)'],
+        benchmarkPrice: 'Auction handling margin: TZS 120 - 180 / kg',
+        averageMargin: '6% - 8% cooperative commission and logistics handling',
+        processingCapacity: 'Storage capacity: 400,000 MT across designated licensed warehouses',
+        geographicHotspots: ['Mtwara Port Zone', 'Lindi Central Warehouses', 'Masasi Depots'],
+        bottlenecks: [
+          'Delay in auction clearing rounds via Tanzania Mercantile Exchange (TMX)',
+          'Cash-flow lags between warehouse delivery and farmer bank disbursements',
+          'Jute bag shortage and inadequate humidity-controlled warehousing'
+        ],
+        investmentOpportunity: 'Modern automated warehousing with digital grain/nut moisture sensors and TMX-integrated electronic inventory financing.'
+      },
+      {
+        id: 'node-csh-3',
+        stageName: '03. Industrial Processors (The Signature Opportunity)',
+        order: 3,
+        roleDescription: 'Steam roasting, automated de-shelling, kernel drying, peeling (testa removal), color sorting, grading (WW180 to WW450), and vacuum packaging.',
+        majorPlayers: ['Korosho Africa', 'Buco Investment', 'Export Trading Group (ETG Processing)', 'Hawte Investment', 'Ward Cashew'],
+        benchmarkPrice: 'White Wholes (WW320) Export Kernel: $6.80 - $7.80 / kg FOB',
+        averageMargin: '38% - 52% gross margin expansion compared to exporting raw nuts',
+        processingCapacity: 'Installed: 85,000 MT/year | Currently Utilized: ~35,000 MT/year (Only 11% domestic value addition)',
+        geographicHotspots: ['Mtwara Special Economic Zone (SEZ)', 'Dar es Salaam Industrial Corridor', 'Lindi EPZA Zone'],
+        bottlenecks: [
+          'High breakage rates in manual shelling lines (requiring optical laser sorters)',
+          'Cashew Nut Shell Liquid (CNSL) byproduct under-commercialization (valuable for bio-resins and brake pads)',
+          'Working capital constraints for buying raw inventories during 90-day auction window'
+        ],
+        investmentOpportunity: '$15M - $30M turnkey automated de-shelling and CNSL extraction facility with 25,000 MT annual capacity in Mtwara SEZ with 10-year tax holiday.'
+      },
+      {
+        id: 'node-csh-4',
+        stageName: '04. Exporters & Trading Houses',
+        order: 4,
+        roleDescription: 'Managing containerized logistics, customs clearance, phytosanitary certification, and maritime ocean freight from Mtwara and Dar Ports.',
+        majorPlayers: ['Export Trading Group (ETG)', 'Olam Agri Tanzania', 'Agro-Focus International', 'Mohamed Enterprise (MeTL)'],
+        benchmarkPrice: 'RCN Export: $1,450 - $1,750 / MT CIF Nhava Sheva / Haiphong',
+        averageMargin: '8% - 12% trading & freight spread',
+        processingCapacity: 'Deep sea terminal capacity: Mtwara Port modernized to handle 400,000 MT',
+        geographicHotspots: ['Mtwara Port Terminal', 'Dar es Salaam Port Terminal'],
+        bottlenecks: [
+          'Container positioning imbalances during peak October-January shipping surge',
+          'Feeder vessel frequency into direct Asian main line services'
+        ],
+        investmentOpportunity: 'Dedicated reefer/dry container transshipment terminal and freight forwarding hub at Mtwara Deepwater Port.'
+      },
+      {
+        id: 'node-csh-5',
+        stageName: '05. International Buyers & Retail FMCG',
+        order: 5,
+        roleDescription: 'Global roasters, snack brands, confectionery conglomerates, and plant-based dairy manufacturers (cashew milk, vegan cheese).',
+        majorPlayers: ['Intersnack (Europe)', 'Kraft Heinz', 'Costco Kirkland Wholesale', 'Haldiram (India)', 'Nestlé'],
+        benchmarkPrice: 'Retail Consumer Pack: $16.00 - $24.00 / kg equivalent on supermarket shelf',
+        averageMargin: '60% - 110% consumer brand markup',
+        geographicHotspots: ['Rotterdam (EU Gateway)', 'New York / Los Angeles (US)', 'Mumbai (India)', 'Shanghai (China)'],
+        bottlenecks: [
+          'Stringent EU and FDA traceability mandates requiring farm-to-shelf digital identity',
+          'Carbon footprint auditing on transshipped nuts via secondary Asian processors'
+        ],
+        investmentOpportunity: 'Direct-to-retail organic certified Tanzanian single-origin cashew brand capturing luxury snack margins in EU and Middle East.'
+      }
+    ],
+    summary: 'Tanzania is the 4th largest cashew producer globally, yet exports over 85% in raw unprocessed form. Processing domestically captures a 3x value uplift, eliminates Asian re-shipping middle margins, and qualifies for AGOA duty-free US entry and EU EPA preferences.',
+    strategicOutlook: 'Government mandate targeting 60% domestic processing by 2028 makes processing machinery duty-free and provides power subsidies in designated Southern Corridor agro-parks.'
+  },
+  {
+    id: 'vc-coffee',
+    slug: 'coffee',
+    name: 'Coffee Value Chain',
+    sector: 'Agriculture',
+    subSector: 'Specialty Beverages & Processing',
+    tagline: 'Farmer → Cooperative Washing Station → Dry Mill → Moshi Auction → International Roaster',
+    annualProduction: '82,000 Metric Tons (Arabica 55%, Robusta 45%)',
+    marketValueUsd: '$230 Million',
+    exportValueUsd: '$198 Million',
+    employmentEstimated: '450,000 smallholder growers',
+    keyRegions: ['Kilimanjaro / Arusha', 'Mbeya / Songwe', 'Ruvuma (Mbinga)', 'Kagera (Bukoba Robusta)'],
+    topDestinations: [
+      { market: 'Japan (Premium Kilimanjaro Arabica)', share: '32%' },
+      { market: 'Germany & Italy (Espresso blending)', share: '28%' },
+      { market: 'United States (Specialty Single Origin)', share: '18%' },
+      { market: 'Morocco & Middle East', share: '12%' },
+      { market: 'Domestic & Regional EAC', share: '10%' }
+    ],
+    nodes: [
+      {
+        id: 'node-cof-1',
+        stageName: '01. Smallholder Cultivation',
+        order: 1,
+        roleDescription: 'High-altitude shade-grown Arabica (Bourbon, Kent varieties) at 1,400-2,000m on volcanic soils of Kilimanjaro and Southern Highlands.',
+        majorPlayers: ['KNCU (Kilimanjaro Native Co-operative Union)', 'Mbozi Coffee Farmers', 'Kagera Co-op Union'],
+        benchmarkPrice: 'Parchment coffee: TZS 7,500 - 9,200 / kg ($2.80 - $3.45 / kg)',
+        averageMargin: '22% farm operating margin',
+        geographicHotspots: ['Moshi', 'Mbinga', 'Mbozi', 'Karatu', 'Bukoba'],
+        bottlenecks: ['Climate variability affecting rainfall patterns', 'Access to modern cherry pulpers'],
+        investmentOpportunity: 'Climate-resilient regenerative coffee farm cluster with centralized eco-pulper washing stations.'
+      },
+      {
+        id: 'node-cof-2',
+        stageName: '02. Central Pulping & Dry Milling',
+        order: 2,
+        roleDescription: 'Wet processing of ripe cherries within 8 hours of picking, followed by parchment sun-drying on raised African beds and mechanical hulling.',
+        majorPlayers: ['Dormans Coffee Tanzania', 'Neumann Kaffee Gruppe (Kenyacof/Tanzacof)', 'Tanganyika Coffee Curing Company (TCCC)'],
+        benchmarkPrice: 'Milling charge: $65 - $80 / MT of green coffee',
+        averageMargin: '14% processing fee margin',
+        geographicHotspots: ['Moshi Industrial Area', 'Mbeya City Mills'],
+        bottlenecks: ['Water treatment compliance in wet mills', 'Color grading throughput'],
+        investmentOpportunity: 'Modern organic-certified dry mill and cupping laboratory in Mbeya Southern Highlands corridor.'
+      },
+      {
+        id: 'node-cof-3',
+        stageName: '03. Moshi Auction & Specialty Direct Trade',
+        order: 3,
+        roleDescription: 'Weekly electronic sample auctions operated by the Tanzania Coffee Board (TCB) alongside direct licensed export contracts.',
+        majorPlayers: ['Tanzania Coffee Board (TCB)', 'ECOM Agroindustrial', 'Sucafina Tanzania', 'Louis Dreyfus Company'],
+        benchmarkPrice: 'Green Coffee AA Grade: $4.40 - $6.20 / kg ($2.00 - $2.80 / lb) FOB',
+        averageMargin: '10% - 15% export trade spread',
+        geographicHotspots: ['TCB Moshi Exchange'],
+        bottlenecks: ['Hedging access for local trading houses against ICE C-Contract volatility'],
+        investmentOpportunity: 'Direct-trade specialty micro-lot export platform connecting small cooperatives directly to US and Japanese craft roasters.'
+      },
+      {
+        id: 'node-cof-4',
+        stageName: '04. Roasting & Consumer Packaging',
+        order: 4,
+        roleDescription: 'Industrial and craft roasting, nitrogen flushing, and retail branding for domestic hospitality and international consumption.',
+        majorPlayers: ['Africafe (Instant Soluble)', 'Tanica (Kagera)', 'Kilicafe', 'Wild Bean Tanzania'],
+        benchmarkPrice: 'Finished Roasted Bag: $18.00 - $35.00 / kg retail',
+        averageMargin: '55% - 85% gross margin on retail roasting',
+        geographicHotspots: ['Dar es Salaam Commercial District', 'Arusha Tourism Gateway'],
+        bottlenecks: ['High import tariffs on specialized degassing valve foil packaging'],
+        investmentOpportunity: 'Commercial freeze-dried instant coffee plant utilizing Bukoba Robusta to substitute $40M East African soluble coffee imports.'
+      }
+    ],
+    summary: 'Tanzanian coffee possesses distinguished acidity, full body, and floral fragrance highly coveted by specialty roasters globally. Value creation lies in wet-mill quality control and soluble instant coffee processing.',
+    strategicOutlook: 'National Coffee Development Strategy aims to increase production to 300,000 MT by 2030 through seed subsidy distribution and Southern corridor expansion.'
+  },
+  {
+    id: 'vc-gold',
+    slug: 'mining-gold',
+    name: 'Gold & Critical Minerals Value Chain',
+    sector: 'Mining',
+    subSector: 'Precious Metals & Strategic Transition Minerals',
+    tagline: 'Concession Exploration → Extraction → On-Site Beneficiation → BoT Gold Reserve / Refinery → International Bullion Exchange',
+    annualProduction: '56 Metric Tons of Gold | 12,000 MT Graphite Flakes',
+    marketValueUsd: '$3.40 Billion (Gold) + $180M (Graphite, Tantalum, Rare Earths)',
+    exportValueUsd: '$3.15 Billion (Tanzania’s #1 Foreign Exchange Earner)',
+    employmentEstimated: '1.2 Million people (direct formal mining + ASM artisanal sector)',
+    keyRegions: ['Geita', 'Mara (North Mara)', 'Shinyanga (Bulyanhulu)', 'Mbeya (Chunya)', 'Lindi (Graphite)'],
+    topDestinations: [
+      { market: 'United Arab Emirates (Dubai Multi Commodities Centre - DMCC)', share: '48%' },
+      { market: 'Bank of Tanzania (BoT National Foreign Reserve Purchase Program)', share: '22%' },
+      { market: 'Switzerland (Valcambi, Metalor Refineries)', share: '18%' },
+      { market: 'South Africa (Rand Refinery)', share: '8%' },
+      { market: 'China & India (Industrial graphite / jewelry)', share: '4%' }
+    ],
+    nodes: [
+      {
+        id: 'node-gld-1',
+        stageName: '01. Exploration & Concession Licencing',
+        order: 1,
+        roleDescription: 'Geological survey mapping, core diamond drilling, resource estimation under JORC code, and environmental impact audits.',
+        majorPlayers: ['Geological Survey of Tanzania (GST)', 'Twiga Minerals (Barrick JV)', 'AngloGold Ashanti (Geita)', 'Shanta Gold'],
+        benchmarkPrice: 'Concession acquisition & drilling: $250 - $450 / drilled meter',
+        averageMargin: 'High risk / High IRR upside on proven reserves (>2.5 g/t grade)',
+        geographicHotspots: ['Lake Victoria Goldfield Greenstone Belt', 'Lupa Goldfield (Chunya)'],
+        bottlenecks: ['Bureaucratic turnaround on Special Mining Licence (SML) renewals', 'Grid power access at remote greenfield sites'],
+        investmentOpportunity: 'Junior exploration syndicates in high-grade brownfield belts with AI-assisted satellite hyperspectral ground mapping.'
+      },
+      {
+        id: 'node-gld-2',
+        stageName: '02. Extraction & Milling',
+        order: 2,
+        roleDescription: 'Open-pit and deep underground mechanised mining, crushing, semi-autogenous grinding (SAG mills), gravity separation, and Carbon-in-Leach (CIL) extraction.',
+        majorPlayers: ['Geita Gold Mine', 'Bulyanhulu Underground', 'North Mara Gold Mine', 'New Luika (Shanta)'],
+        benchmarkPrice: 'All-In Sustaining Cost (AISC): $1,050 - $1,320 / troy ounce',
+        averageMargin: '48% - 58% operating cash margin at current $2,400+/oz gold prices',
+        geographicHotspots: ['Geita Region', 'Tarime (Mara)', 'Kahama'],
+        bottlenecks: ['Local availability of cyanide and heavy earthmoving tires', 'Power tariff fluctuations'],
+        investmentOpportunity: 'Industrial mining supplies and heavy fleet maintenance depot in Kahama Logistics Hub servicing Lake Zone mines.'
+      },
+      {
+        id: 'node-gld-3',
+        stageName: '03. Local Smelting & National Bullion Refining',
+        order: 3,
+        roleDescription: 'Smelting raw doré bars (80-88% purity) into 99.99% LBMA-standard investment gold bullion bars.',
+        majorPlayers: ['Mwanza Gold Refinery', 'Eye of Africa Refinery (Geita)', 'State Mining Corporation (STAMICO)'],
+        benchmarkPrice: 'Refining fee: $3.50 - $6.00 / troy ounce doré',
+        averageMargin: '8% - 12% steady toll refining spread',
+        geographicHotspots: ['Mwanza City', 'Geita Town Mineral Trading Hub'],
+        bottlenecks: ['Achieving full London Bullion Market Association (LBMA) good delivery accreditation for direct central bank clearance'],
+        investmentOpportunity: 'Gold assaying technology, bonded bullion vaulting, and minting of commemorative and commercial 1oz investment coins.'
+      },
+      {
+        id: 'node-gld-4',
+        stageName: '04. Sovereign Reserve Purchase & Bullion Export',
+        order: 4,
+        roleDescription: 'BoT purchases gold in local currency (TZS) directly from local refiners to shore up international reserves, reducing dollar dependence.',
+        majorPlayers: ['Bank of Tanzania (BoT)', 'State Mining Corporation (STAMICO)', 'Emirates Gold', 'StoneX'],
+        benchmarkPrice: 'Spot Gold Index less 0.5% - 1.0% wholesale discount',
+        averageMargin: 'Sovereign liquidity protection and FX stabilization dividend',
+        geographicHotspots: ['BoT Vaults (Dar es Salaam & Dodoma)', 'Julius Nyerere International Airport (JNIA)'],
+        bottlenecks: ['Export security logistics and high Lloyd’s international transit insurance premiums'],
+        investmentOpportunity: 'Structured gold-backed trade finance facilities and local currency bullion hedging instruments for commercial banks.'
+      }
+    ],
+    summary: 'Gold is Tanzania’s preeminent source of hard currency revenue. The Bank of Tanzania’s aggressive mandate to purchase domestic gold for reserves has created an institutional local market for miners.',
+    strategicOutlook: 'Parallel expansion into transition minerals (Graphite in Lindi for EV batteries, Nickel in Kabanga, and Rare Earths at Ngualla) positions Tanzania as an indispensable critical supply chain partner.'
+  },
+  {
+    id: 'vc-gas',
+    slug: 'natural-gas',
+    name: 'Natural Gas & Energy Value Chain',
+    sector: 'Energy',
+    subSector: 'Hydrocarbons & Industrial Power Generation',
+    tagline: 'Offshore Exploration → Extraction (Songo Songo / Mnazi Bay) → National Gas Pipeline → Power Generation & Industry → Planned Lindi LNG Export',
+    annualProduction: '110 Billion Cubic Feet (Bcf) per year domestic consumption',
+    marketValueUsd: '$850 Million domestic power & industrial value | $42 Billion planned LNG project',
+    exportValueUsd: 'Primarily domestic import substitution today; $3B+/yr export potential post-LNG',
+    employmentEstimated: '45,000 direct and industrial indirect roles',
+    keyRegions: ['Mtwara (Mnazi Bay)', 'Kilwa / Lindi (Songo Songo & LNG Site)', 'Dar es Salaam (Industrial Offtakers)', 'Pwani'],
+    topDestinations: [
+      { market: 'Domestic Power (TANESCO Kinyerezi 1, 2 & Ubungo Plants)', share: '68%' },
+      { market: 'Industrial Manufacturing (Dangote Cement, Twiga Cement, Bakhresa)', share: '24%' },
+      { market: 'Compressed Natural Gas (CNG) Transport & Domestic Households', share: '8%' }
+    ],
+    nodes: [
+      {
+        id: 'node-gas-1',
+        stageName: '01. Offshore & Onshore Gas Extraction',
+        order: 1,
+        roleDescription: 'Production wells in shallow and deepwater fields extracting high-methane sweet natural gas with minimal impurities.',
+        majorPlayers: ['Tanzania Petroleum Development Corporation (TPDC)', 'PanAfrican Energy Tanzania (PAET)', 'Wentworth Resources (M&P)'],
+        benchmarkPrice: 'Wellhead gas contract: $3.20 - $4.80 / MMBtu',
+        averageMargin: '42% operating EBITDA margin',
+        geographicHotspots: ['Songo Songo Island (Kilwa)', 'Mnazi Bay (Mtwara)'],
+        bottlenecks: ['Capital requirements for subsea compression upgrades to sustain plateau pressure'],
+        investmentOpportunity: 'Subsea well maintenance services and regional pipeline feeder spur lines.'
+      },
+      {
+        id: 'node-gas-2',
+        stageName: '02. National Transmission Infrastructure',
+        order: 2,
+        roleDescription: 'The 532km, 36-inch National Natural Gas Pipeline transporting fuel from Mtwara/Madimba and Songo Songo north to Dar es Salaam.',
+        majorPlayers: ['Gas Supply Company Limited (GASCO / TPDC)'],
+        benchmarkPrice: 'Transmission tariff: ~$0.85 / MMBtu',
+        averageMargin: 'Regulated utility return (~12% - 15%)',
+        geographicHotspots: ['Madimba Gas Processing Plant', 'Somanga Fungu', 'Kinyerezi Receiving Terminal'],
+        bottlenecks: ['Last-mile distribution network connecting medium industrial parks in Kibaha and Bagamoyo'],
+        investmentOpportunity: 'Private-public partnership (PPP) industrial gas distribution reticulation networks in Pwani and Dar es Salaam.'
+      },
+      {
+        id: 'node-gas-3',
+        stageName: '03. Power Generation & Industrial Offtake',
+        order: 3,
+        roleDescription: 'Converting natural gas into baseload electricity at combined cycle thermal plants (Kinyerezi) and direct firing for cement kilns and glass factories.',
+        majorPlayers: ['TANESCO (National Utility)', 'Symbion Power', 'Kilwa Energy Company', 'Dangote Cement Power Plant (45MW)'],
+        benchmarkPrice: 'Electricity generation cost: $0.065 - $0.082 / kWh',
+        averageMargin: 'Provides competitive advantage for energy-intensive manufacturers',
+        geographicHotspots: ['Kinyerezi Complex (Dar)', 'Ubungo', 'Mtwara Industrial Area'],
+        bottlenecks: ['Transmission grid stability requiring regional substation modernizations'],
+        investmentOpportunity: 'Captive gas-fired cogeneration plants (10MW - 50MW) for export-processing industrial zones.'
+      },
+      {
+        id: 'node-gas-4',
+        stageName: '04. Compressed Natural Gas (CNG) & Clean Mobility',
+        order: 4,
+        roleDescription: 'Compressing pipeline gas to 200-250 bar for vehicle conversion kits (buses, bajajis, private fleets) and virtual pipeline mother-daughter stations.',
+        majorPlayers: ['TAQA Dalbit', 'Anric Gas Technology', 'TPDC Retail CNG', 'Bakhresa CNG Fleet'],
+        benchmarkPrice: 'CNG Pump Price: TZS 1,550 / kg (vs Petrol TZS 3,250 / liter — 50% fuel savings)',
+        averageMargin: '30% - 40% retail distribution margin',
+        geographicHotspots: ['Dar es Salaam BRT Corridors', 'Morogoro Road', 'Kibaha'],
+        bottlenecks: ['Shortage of certified vehicle conversion workshops and high-pressure daughter dispensing stations'],
+        investmentOpportunity: 'Network of 15 commercial CNG dispensing mother-daughter stations along the Central Transport Corridor.'
+      }
+    ],
+    summary: 'With over 57 Trillion Cubic Feet (TCF) of discovered natural gas reserves, Tanzania has replaced expensive heavy fuel oil with clean domestic gas for over 60% of grid thermal power. The planned $42B Lindi LNG project will catalyze the largest single private investment in East African history.',
+    strategicOutlook: 'Host Government Agreement (HGA) negotiations with international energy consortium (Equinor, Shell, ExxonMobil) advancing toward Final Investment Decision (FID).'
+  },
+  {
+    id: 'vc-horticulture',
+    slug: 'horticulture',
+    name: 'Horticulture & Fresh Produce Value Chain',
+    sector: 'Agriculture',
+    subSector: 'High-Value Cold Chain & Agro-Exports',
+    tagline: 'Farmer & Greenhouse → Packhouse & Cold Storage → Reefer Logistics → Air/Sea Freight → European Supermarket',
+    annualProduction: '1.2 Million MT fresh produce (Avocado, Green Beans, Herbs, Mangoes, Flowers)',
+    marketValueUsd: '$380 Million',
+    exportValueUsd: '$140 Million (Fastest growing agricultural sub-sector at +16% CAGR)',
+    employmentEstimated: '350,000 individuals, majority youth and women',
+    keyRegions: ['Iringa / Njombe (Hass Avocado Belt)', 'Arusha & Kilimanjaro (Flowers, Vegetables)', 'Morogoro', 'Tanga (Citrus)'],
+    topDestinations: [
+      { market: 'Netherlands (Rotterdam distribution hub)', share: '38%' },
+      { market: 'United Kingdom (Direct supermarket supply)', share: '24%' },
+      { market: 'United Arab Emirates & Saudi Arabia', share: '18%' },
+      { market: 'India & China (New protocol market access)', share: '12%' },
+      { market: 'Regional EAC / Kenya transit', share: '8%' }
+    ],
+    nodes: [
+      {
+        id: 'node-hrt-1',
+        stageName: '01. Commercial Cultivation & Outgrower Networks',
+        order: 1,
+        roleDescription: 'GLOBALG.A.P. certified orchards and precision drip greenhouses growing Hass avocados, snow peas, baby corn, and cut roses.',
+        majorPlayers: ['TAHA (Tanzania Horticultural Association)', 'Africado (Kilimanjaro)', 'Rijk Zwaan Q-Sem', 'Kazi Yetu'],
+        benchmarkPrice: 'Farmgate Hass Avocado: TZS 1,800 - 2,500 / kg ($0.70 - $0.95 / kg)',
+        averageMargin: '35% - 48% operating margin for certified growers',
+        geographicHotspots: ['Njombe', 'Rungwe (Mbeya)', 'Uwemba Plateau', 'Moshi'],
+        bottlenecks: ['Traceability software adoption for small outgrowers', 'Availability of certified pathogen-free rootstock'],
+        investmentOpportunity: '500-hectare irrigated commercial Hass avocado estate with nucleus smallholder contract farming model in Njombe.'
+      },
+      {
+        id: 'node-hrt-2',
+        stageName: '02. Packhouse, Pre-Cooling & Optical Grading',
+        order: 2,
+        roleDescription: 'Rapid temperature pulldown to 4°C within 3 hours of harvest, automated weight sizing, wax coating, and modified atmosphere packaging.',
+        majorPlayers: ['Kuza Packhouses (Iringa)', 'Africado Central Packhouse', 'Tanzania Fresh Produce Terminal'],
+        benchmarkPrice: 'Packhouse handling & grading fee: $0.25 - $0.35 / kg',
+        averageMargin: '18% processing service margin',
+        geographicHotspots: ['Njombe Town', 'Iringa Municipality', 'Arusha Airport Logistics Zone'],
+        bottlenecks: ['Lack of blast freezers in the Southern Highlands leading to harvest post-harvest distress selling'],
+        investmentOpportunity: '$8M commercial cold chain packhouse hub with MA packaging line in Makambako / Njombe junction.'
+      },
+      {
+        id: 'node-hrt-3',
+        stageName: '03. Cold-Chain Logistics & Sea/Air Freight',
+        order: 3,
+        roleDescription: 'Temperature-monitored refrigerated containers (reefers) trucking via the upgraded TANZAM highway to Dar port or direct air freight via KIA.',
+        majorPlayers: ['Maersk Cold Chain Tanzania', 'Bolloré / AGL Logistics', 'CMA CGM', 'Precision Air / Ethiopian Cargo at KIA'],
+        benchmarkPrice: 'Ocean Reefer to Rotterdam: $4,200 - $5,100 / 40ft Container (22 MT)',
+        averageMargin: '12% freight forwarding spread',
+        geographicHotspots: ['Kilimanjaro International Airport (KIA)', 'Dar es Salaam Maritime Reefer Yard'],
+        bottlenecks: ['Congestion delays at Dar Port scanning gates for perishable green-channel reefers'],
+        investmentOpportunity: 'Dedicated perishable green corridor logistics fleet with real-time GPS temperature IoT telemetry.'
+      }
+    ],
+    summary: 'Tanzania’s diverse ecological altitude zones enable year-round harvesting of premium Hass avocados, French beans, and berries. Export volumes to Europe and the Middle East are accelerating at over 15% annually.',
+    strategicOutlook: 'Bilateral export protocols recently unlocked direct avocado shipments to China and India without transit through third-party hubs.'
+  },
+  {
+    id: 'vc-cement',
+    slug: 'cement',
+    name: 'Cement & Construction Value Chain',
+    sector: 'Industry',
+    subSector: 'Heavy Building Materials & Regional Export',
+    tagline: 'Limestone Quarrying → Clinker Calcination (Rotary Kilns) → Grinding & Blending → Bulk / Bagged Distribution → Infrastructure Offtake & Regional Export',
+    annualProduction: '10.5 Million Metric Tons (Installed Capacity: 13.5M MT)',
+    marketValueUsd: '$920 Million',
+    exportValueUsd: '$180 Million to Great Lakes / SADC (DRC, Rwanda, Burundi, Zambia)',
+    employmentEstimated: '85,000 direct and supply chain construction workers',
+    keyRegions: ['Dar es Salaam (Wazo Hill)', 'Tanga', 'Mtwara', 'Mbeya', 'Coast (Bagamoyo)'],
+    topDestinations: [
+      { market: 'Domestic Infrastructure & Urban Construction', share: '78%' },
+      { market: 'Democratic Republic of Congo (Eastern DRC via Lake Tanganyika)', share: '12%' },
+      { market: 'Rwanda & Burundi (Via Central Railway Corridor)', share: '6%' },
+      { market: 'Malawi & Zambia (Via TAZARA railway corridor)', share: '4%' }
+    ],
+    nodes: [
+      {
+        id: 'node-cmt-1',
+        stageName: '01. Limestone & Gypsum Quarrying',
+        order: 1,
+        roleDescription: 'Open-cast quarrying of massive high-calcium coral limestone deposits and pozzolana additive minerals.',
+        majorPlayers: ['Tanzania Portland Cement (TPCC / Twiga)', 'Dangote Limestone Concession', 'Tanga Cement PLC (Simba)', 'Maweni Limestone'],
+        benchmarkPrice: 'Raw limestone quarrying cost: $4.50 - $6.20 / MT',
+        averageMargin: 'Integrated quarrying internal transfer value',
+        geographicHotspots: ['Wazo Hill (Dar)', 'Pongwe (Tanga)', 'Ngaka (Coal for kilns in Ruvuma)'],
+        bottlenecks: ['Transporting domestic thermal coal from Ruvuma to coastal cement kilns'],
+        investmentOpportunity: 'Alternative kiln fuel systems utilizing agricultural biomass (cashew shells, rice husks) to replace imported petcoke.'
+      },
+      {
+        id: 'node-cmt-2',
+        stageName: '02. Clinker Calcination & Grinding',
+        order: 2,
+        roleDescription: 'Thermal heating in rotary kilns at 1,450°C, followed by ball-mill grinding with gypsum to produce CEM I, CEM II (32.5R & 42.5N) grades.',
+        majorPlayers: ['TPCC (Twiga - Scancem)', 'Dangote Cement (Mtwara 3M MT plant)', 'Tanga Cement (Simba)', 'Amsons Group (Camel Cement)'],
+        benchmarkPrice: 'Wholesale factory gate: TZS 17,500 - 19,500 / 50kg bag ($140 - $155 / MT)',
+        averageMargin: '26% - 34% EBITDA margin for energy-efficient integrated plants',
+        geographicHotspots: ['Dar es Salaam Industrial Zone', 'Mtwara Gas Industrial Park', 'Tanga Port Basin'],
+        bottlenecks: ['High freight cost moving cement from southern Mtwara plant to northern Dar market'],
+        investmentOpportunity: 'Dedicated coastal sea barge transport service moving bulk cement from Mtwara to Dar es Salaam and Zanzibar ports.'
+      },
+      {
+        id: 'node-cmt-3',
+        stageName: '03. Domestic Wholesale & Regional Cross-Border Export',
+        order: 3,
+        roleDescription: 'Bulk tanker distribution to mega infrastructure projects (SGR, JNHPP) and bagged delivery across East Africa.',
+        majorPlayers: ['Bakhresa Transport', 'Dangote Logistics Fleet', 'TRC Freight (Standard Gauge Railway)', 'Kigoma Lake Port Barges'],
+        benchmarkPrice: 'Export price at DRC border: $185 - $220 / MT delivered',
+        averageMargin: '15% - 22% cross-border distribution markup',
+        geographicHotspots: ['Kigoma Port (Lake Tanganyika)', 'Rusumo / Kabanga Border (Rwanda/Burundi)', 'Tunduma Border (Zambia)'],
+        bottlenecks: ['Cross-border customs transit paperwork and axle-load checkpoint congestion'],
+        investmentOpportunity: 'Intermodal bulk cement transshipment terminal at Kigoma Port to dominate the high-margin Eastern DRC reconstruction market.'
+      }
+    ],
+    summary: 'Tanzania has transformed from a net cement importer into the dominant industrial manufacturing hub for East and Central Africa, fueled by abundant coastal limestone, cheap domestic natural gas, and the SGR railway expansion.',
+    strategicOutlook: 'The commissioning of the SGR freight service from Dar to Mwanza and Kigoma cuts inland freight costs to the DRC and Rwanda by 40%, cementing Tanzanian dominance.'
+  }
+];
+
+export const COMPANIES_DATABASE: CompanyRecord[] = [
+  {
+    id: 'comp-tpcc',
+    name: 'Tanzania Portland Cement PLC (Twiga Cement)',
+    sector: 'Industry',
+    subSector: 'Building Materials & Cement',
+    location: 'Wazo Hill, Dar es Salaam',
+    region: 'Dar es Salaam',
+    revenueBracket: '$180M - $250M',
+    employees: '650+ direct, 2,000+ indirect',
+    ownership: 'Public (DSE)',
+    status: 'Active',
+    yearFounded: 1966,
+    description: 'The premier cement producer in Tanzania with over 2.0M MT capacity. Listed on the Dar es Salaam Stock Exchange (DSE: TCCL) and affiliated with Heidelberg Materials.',
+    keyProductsOrAssets: ['Twiga Extra (32.5R)', 'Twiga Plus (42.5N)', 'Twiga Super', 'Limestone quarry at Wazo Hill', 'Captive power generation'],
+    valueChainRole: 'Tier 1 Cement Calcination & National Distribution Leader',
+    verifiedData: true
+  },
+  {
+    id: 'comp-dangote',
+    name: 'Dangote Cement Tanzania Ltd',
+    sector: 'Industry',
+    subSector: 'Heavy Manufacturing & Export',
+    location: 'Mtwara Industrial Complex',
+    region: 'Mtwara',
+    revenueBracket: '$120M - $180M',
+    employees: '1,200+',
+    ownership: 'Joint Venture / FDI',
+    status: 'Active',
+    yearFounded: 2015,
+    description: 'Tanzania’s largest single cement manufacturing plant with 3.0M MT capacity, powered by its own 45MW natural gas-fired power station in Mtwara.',
+    keyProductsOrAssets: ['3.0M MT Integrated Kiln Line', '45MW Gas Captive Power Plant', 'Fleet of 600 heavy distribution trucks'],
+    valueChainRole: 'Mega-scale Producer & Southern Corridor / Regional Exporter',
+    verifiedData: true
+  },
+  {
+    id: 'comp-tanga-cement',
+    name: 'Tanga Cement PLC (Simba Cement)',
+    sector: 'Industry',
+    subSector: 'Cement & Pozzolana',
+    location: 'Pongwe Industrial Area',
+    region: 'Tanga',
+    revenueBracket: '$80M - $120M',
+    employees: '450+',
+    ownership: 'Public (DSE)',
+    status: 'Active',
+    yearFounded: 1980,
+    description: 'Long-standing manufacturer of Simba brand cement. Listed on the DSE, serving the northern circuit, central Tanzania, and export markets in Rwanda and Burundi.',
+    keyProductsOrAssets: ['Kiln 1 & 2 Lines (1.25M MT capacity)', 'Simba Baraka 32.5', 'Simba Fasta 42.5'],
+    valueChainRole: 'Northern Corridor & Great Lakes Rail Exporter',
+    verifiedData: true
+  },
+  {
+    id: 'comp-etg',
+    name: 'Export Trading Group (ETG Tanzania)',
+    sector: 'Agriculture',
+    subSector: 'Commodity Aggregation & Processing',
+    location: 'Bandra House, Dar es Salaam',
+    region: 'Dar es Salaam',
+    revenueBracket: '$350M - $500M',
+    employees: '2,500+',
+    ownership: 'Private',
+    status: 'Active',
+    yearFounded: 1967,
+    description: 'One of Africa’s largest diversified agricultural conglomerates. Dominates cashew processing, fertilizer distribution, grain warehousing, and commodity export from Tanzania.',
+    keyProductsOrAssets: ['Cashew Processing Facility Mtwara', 'Fertilizer blending plant', 'Over 40 rural primary collection warehouses', 'Kurasini Logistics Depot'],
+    valueChainRole: 'Leading Aggregator, Cashew Sheller & Global Commodity Exporter',
+    verifiedData: true
+  },
+  {
+    id: 'comp-metl',
+    name: 'MeTL Group (Mohammed Enterprises Tanzania Ltd)',
+    sector: 'Manufacturing',
+    subSector: 'Diversified Conglomerate & FMCG',
+    location: 'Golden Jubilee Tower, Dar es Salaam',
+    region: 'Dar es Salaam',
+    revenueBracket: '$1.0B+ across Group',
+    employees: '28,000+ across East Africa',
+    ownership: 'Private',
+    status: 'Active',
+    yearFounded: 1970,
+    description: 'Tanzania’s largest home-grown private sector conglomerate with business lines across edible oil refining, textile manufacturing, beverage bottling (Mo Cola), soaps, and cashew trading.',
+    keyProductsOrAssets: ['Edible Oil Refinery (Dar)', 'Textile Mills (Morogoro)', 'Beverage plants', 'Fleet of 2,000+ commercial distribution trucks'],
+    valueChainRole: 'FMCG Manufacturer, Agro-Industrial Processor & Nationwide Distributor',
+    verifiedData: true
+  },
+  {
+    id: 'comp-bakhresa',
+    name: 'Bakhresa Group (Azam)',
+    sector: 'Manufacturing',
+    subSector: 'Agro-processing, Food & Marine Logistics',
+    location: 'Vingunguti Industrial Estate, Dar es Salaam',
+    region: 'Dar es Salaam',
+    revenueBracket: '$800M - $1.1B',
+    employees: '12,000+',
+    ownership: 'Private',
+    status: 'Expanding',
+    yearFounded: 1983,
+    description: 'Iconic Tanzanian corporate giant famous for Azam wheat flour, dairy, fruit juices, bakeries, high-speed passenger/cargo ferry lines to Zanzibar, and inland container depots.',
+    keyProductsOrAssets: ['Flour Mills (3,000 MT/day)', 'Azam Marine Fast Ferries fleet', 'Fruit processing plant (Morogoro)', 'Kurasini ICD Terminal'],
+    valueChainRole: 'Mega Food Processor, FMCG Brand & Marine Logistics Operator',
+    verifiedData: true
+  },
+  {
+    id: 'comp-crdb',
+    name: 'CRDB Bank PLC',
+    sector: 'Services',
+    subSector: 'Banking & Financial Services',
+    location: 'CRDB Headquarters, Kijitonyama, Dar es Salaam',
+    region: 'Dar es Salaam',
+    revenueBracket: '$450M+ (Assets: $6.0B+)',
+    employees: '4,200+',
+    ownership: 'Public (DSE)',
+    status: 'Active',
+    yearFounded: 1996,
+    description: 'The largest commercial bank in Tanzania by asset base, deposits, and branches. Major financier of national agricultural value chains (WRS financing) and regional subsidiary in DRC and Burundi.',
+    keyProductsOrAssets: ['260+ Branch Network', '25,000+ CRDB Wakala Agents', 'Agri-financing portfolio exceeding TZS 1.2 Trillion', 'DRC Subsidiary'],
+    valueChainRole: 'Anchor Institutional Financier for National Value Chains & Trade',
+    verifiedData: true
+  },
+  {
+    id: 'comp-nmb',
+    name: 'NMB Bank PLC',
+    sector: 'Services',
+    subSector: 'Commercial & Agricultural Banking',
+    location: 'Ohio Street, Dar es Salaam',
+    region: 'Dar es Salaam',
+    revenueBracket: '$420M+ (Assets: $5.4B+)',
+    employees: '3,800+',
+    ownership: 'Public (DSE)',
+    status: 'Active',
+    yearFounded: 1997,
+    description: 'Leading retail and agricultural bank in Tanzania with Rabobank as a strategic shareholder. Commands unmatched footprint across rural farming districts and digital banking.',
+    keyProductsOrAssets: ['230+ branches in 98% of districts', 'NMB Foundation agricultural incubation', 'Over TZS 1.5 Trillion in SME/Agri loans'],
+    valueChainRole: 'Rural Value-Chain Credit & Digital Trade Payment Enabler',
+    verifiedData: true
+  },
+  {
+    id: 'comp-barrick-twiga',
+    name: 'Twiga Minerals Corporation (Barrick Gold JV)',
+    sector: 'Mining',
+    subSector: 'Large-Scale Gold Extraction & Bullion',
+    location: 'North Mara & Bulyanhulu Sites',
+    region: 'Mara & Shinyanga',
+    revenueBracket: '$800M - $1.2B',
+    employees: '3,400+ (96% Tanzanian nationals)',
+    ownership: 'Joint Venture / FDI',
+    status: 'Active',
+    yearFounded: 2019,
+    description: 'Groundbreaking 84/16 partnership between the Government of Tanzania and Barrick Gold Corporation, managing the Tier-One North Mara and Bulyanhulu gold mines.',
+    keyProductsOrAssets: ['North Mara Open Pit & Underground', 'Bulyanhulu Deep Underground Mine', 'Automated CIL Processing Plants'],
+    valueChainRole: 'Dominant Gold Producer & Largest Corporate Tax Contributor in Tanzania',
+    verifiedData: true
+  },
+  {
+    id: 'comp-paet',
+    name: 'PanAfrican Energy Tanzania (PAET)',
+    sector: 'Energy',
+    subSector: 'Upstream Natural Gas Production',
+    location: 'Oysterbay, Dar es Salaam & Songo Songo Island',
+    region: 'Dar es Salaam & Lindi',
+    revenueBracket: '$75M - $110M',
+    employees: '180+',
+    ownership: 'Joint Venture / FDI',
+    status: 'Active',
+    yearFounded: 2001,
+    description: 'Operates the Songo Songo gas field, producing natural gas that powers over 50% of Tanzania’s grid thermal electricity and over 45 major industrial plants in Dar es Salaam.',
+    keyProductsOrAssets: ['8 Offshore/Onshore Gas Production Wells', 'Songo Songo Gas Processing Plant', 'Dar Industrial Ring Main Gas Pipeline'],
+    valueChainRole: 'Primary Natural Gas Producer for National Power & Industry',
+    verifiedData: true
+  },
+  {
+    id: 'comp-vodacom',
+    name: 'Vodacom Tanzania PLC',
+    sector: 'Services',
+    subSector: 'Telecommunications & FinTech',
+    location: 'Vodacom Tower, Ursino Estate, Dar es Salaam',
+    region: 'Dar es Salaam',
+    revenueBracket: '$400M - $520M',
+    employees: '1,100+',
+    ownership: 'Public (DSE)',
+    status: 'Active',
+    yearFounded: 1999,
+    description: 'Tanzania’s leading mobile network operator and creator of M-Pesa, processing over $2.5B in monthly mobile transactions across micro-merchants and rural farmers.',
+    keyProductsOrAssets: ['19M+ Subscribers', 'M-Pesa Mobile Financial Ecosystem', 'Extensive 4G/5G Fiber Backbone Network across Tanzania'],
+    valueChainRole: 'Digital Payment Infrastructure for Supply Chains & Rural Trade',
+    verifiedData: true
+  },
+  {
+    id: 'comp-agl',
+    name: 'Africa Global Logistics (AGL Tanzania / ex-Bolloré)',
+    sector: 'Services',
+    subSector: 'Port Terminal Operations & Freight Logistics',
+    location: 'Bandari Road, Kurasini, Dar es Salaam',
+    region: 'Dar es Salaam',
+    revenueBracket: '$90M - $140M',
+    employees: '850+',
+    ownership: 'Joint Venture / FDI',
+    status: 'Expanding',
+    yearFounded: 1930,
+    description: 'Major logistics and freight conglomerate operating container yards, customs brokerage, and maritime handling connected to the Port of Dar es Salaam.',
+    keyProductsOrAssets: ['Dar es Salaam Maritime Container Depots', 'Reefer cold storage facility', 'Mining logistics cross-border fleet to DRC and Zambia'],
+    valueChainRole: 'Critical Port Logistics & Great Lakes Multimodal Corridor Operator',
+    verifiedData: true
+  }
+];
+
+export const INVESTMENT_OPPORTUNITIES: InvestmentOpportunity[] = [
+  {
+    id: 'opp-mtwara-cashew',
+    title: 'Automated Cashew Kernel Shelling & CNSL Extraction Hub',
+    sector: 'Agriculture',
+    industry: 'Nut Processing & Bio-chemicals',
+    companyOrSponsor: 'Mtwara Agro-Industrial SEZ Special Purpose Vehicle',
+    project: 'Mtwara 25,000 MT/yr Integrated Cashew Agro-Park',
+    location: 'Mtwara Special Economic Zone, Port Enclave',
+    region: 'Mtwara',
+    mapCoords: { x: 74, y: 84 }, // Southern Coastal Node
+    capitalRequired: '$18.5 Million',
+    capitalAmountUsd: 18500000,
+    expectedReturn: '26.4% Projected Project IRR (Equity Payback 4.2 Years)',
+    riskLevel: 'Moderate',
+    projectStage: 'Shovel-Ready',
+    incentivesAvailable: 'EPZA 10-year Corporate Income Tax exemption, 100% duty waiver on processing equipment, zero VAT on utility inputs, guaranteed raw cashew auction allocation.',
+    summary: 'Turnkey industrial cashew shelling, laser sorting, vacuum packing line and Cashew Nut Shell Liquid (CNSL) extraction plant right at Mtwara Port. Direct ocean shipment saves $80/MT in inland hauling.',
+    keyMilestones: [
+      '50-acre industrial plot gazetted inside Mtwara SEZ with dedicated 33kV line',
+      'Feasibility and environmental impact assessment (EIA) fully approved by NEMC',
+      'Offtake Letters of Intent signed with 2 European organic snack distributors for 6,000 MT kernels'
+    ]
+  },
+  {
+    id: 'opp-dar-coldchain',
+    title: 'Kurasini Multimodal Port Cold Chain & Reefer Terminal',
+    sector: 'Logistics',
+    industry: 'Cold Storage & Fresh Cargo Handling',
+    companyOrSponsor: 'Tanzania Ports Authority (TPA) & Private Co-developer',
+    project: 'Dar Green Port Perishables Terminal',
+    location: 'Kurasini Waterfront, Dar es Salaam Port',
+    region: 'Dar es Salaam',
+    mapCoords: { x: 68, y: 55 }, // Dar es Salaam Coastal Center
+    capitalRequired: '$45.0 Million',
+    capitalAmountUsd: 45000000,
+    expectedReturn: '21.8% Projected IRR (Long-term Infrastructure Yield)',
+    riskLevel: 'Low',
+    projectStage: 'Operational Scaling',
+    incentivesAvailable: 'TIC Strategic Investor Status: Accelerated capital depreciation, fast-track single-window customs bonded status, long-term concession lease.',
+    summary: 'A high-throughput 20,000-pallet temperature-controlled (-25°C to +15°C) distribution terminal equipped with 600 reefer plug points, blast freezers, and automated quarantine inspection for avocados, seafood, and meat exports.',
+    keyMilestones: [
+      'Phase 1 civil works 40% complete; seeking joint venture equity partner for Phase 2 cold racking',
+      'Direct rail spur connected to the Standard Gauge Railway (SGR) freight yard',
+      'Anchor concession agreement pre-negotiated with top international shipping line'
+    ]
+  },
+  {
+    id: 'opp-dodoma-commercial',
+    title: 'Dodoma Executive Capital Commercial & Hospitality Complex',
+    sector: 'Manufacturing',
+    industry: 'Commercial Real Estate & Institutional Facilities',
+    companyOrSponsor: 'Capital Development Authority & Private Syndicate',
+    project: 'Dodoma Diplomatic & Financial City Center',
+    location: 'City Center Corridor, Dodoma Capital City',
+    region: 'Dodoma',
+    mapCoords: { x: 48, y: 48 }, // Central Dodoma
+    capitalRequired: '$32.0 Million',
+    capitalAmountUsd: 32000000,
+    expectedReturn: '18.5% Projected IRR (Inflation-indexed government & diplomatic leases)',
+    riskLevel: 'Low',
+    projectStage: 'Shovel-Ready',
+    incentivesAvailable: 'Zero municipal development levies for 5 years, guaranteed long-term master leases with international development missions and corporate headquarters.',
+    summary: 'With all national ministries, embassies, and regulatory headquarters permanently relocated to Dodoma, demand for Grade A office suites, conference facilities, and four-star hospitality has outstripped supply by 4x.',
+    keyMilestones: [
+      'Prime 8.5-hectare title deed secured adjacent to the Government City Complex',
+      'Architectural masterplan completed and approved by National Planning Commission',
+      'Pre-leasing commitments secured for 45% of total leasable office floor area'
+    ]
+  },
+  {
+    id: 'opp-mwanza-fish',
+    title: 'Lake Victoria Commercial Aquaculture & Cold-Chain Fillet Facility',
+    sector: 'Agriculture',
+    industry: 'Fisheries & Marine Agro-processing',
+    companyOrSponsor: 'Victoria Marine Foods Ltd',
+    project: 'Lake Victoria Sustainable Tilapia & Nile Perch Processing Unit',
+    location: 'Ilemela Industrial Shoreline, Mwanza',
+    region: 'Mwanza',
+    mapCoords: { x: 30, y: 22 }, // Northwest Lake Zone
+    capitalRequired: '$14.0 Million',
+    capitalAmountUsd: 14000000,
+    expectedReturn: '24.2% Projected IRR',
+    riskLevel: 'Moderate',
+    projectStage: 'Expansion',
+    incentivesAvailable: 'Duty exemption on cage aquaculture equipment, export tax rebate on certified processed fillets, priority SGR refrigerated wagon slots.',
+    summary: 'Establishment of 120 deep-water floating cage aquaculture units producing 8,000 MT tilapia annually, coupled with an EU-standard flash-freezing fillet processing factory and fishmeal byproduct plant.',
+    keyMilestones: [
+      'Water basin surface environmental permit secured from Lake Victoria Basin Board',
+      'Existing landing site operating at small scale; capital enables industrial scaling to 8,000 MT',
+      'Trial export shipments of fresh air-flown chilled fillets cleared to Brussels and Dubai'
+    ]
+  },
+  {
+    id: 'opp-arusha-avocado',
+    title: 'Northern Circuit Commercial Avocado Packhouse & Oil Refinery',
+    sector: 'Agriculture',
+    industry: 'Specialty Horticulture & Crude Avocado Oil',
+    companyOrSponsor: 'Meru Agro-Allied Holdings',
+    project: 'Arusha High-Tech Packhouse & Extra-Virgin Avocado Oil Press',
+    location: 'Usa River Industrial Corridor, Arusha',
+    region: 'Arusha',
+    mapCoords: { x: 55, y: 20 }, // Northern Highland Zone
+    capitalRequired: '$9.5 Million',
+    capitalAmountUsd: 9500000,
+    expectedReturn: '28.0% Projected IRR',
+    riskLevel: 'Low',
+    projectStage: 'Shovel-Ready',
+    incentivesAvailable: 'TAHA agricultural rebate, zero import duty on MA packaging technology and centrifuge oil extraction equipment.',
+    summary: 'Commercial packhouse with optical sorting (15 MT/hour) and cold-press oil extraction converting B-grade reject fruit into premium cosmetic and culinary extra-virgin avocado oil ($9,500/MT).',
+    keyMilestones: [
+      'Binding supply contracts executed with 450 outgrower farmer groups in Kilimanjaro/Arusha',
+      'Direct highway access to Kilimanjaro International Airport (25 minutes)',
+      'Offtake pre-contract for 800 MT crude avocado oil with European cosmetics manufacturer'
+    ]
+  },
+  {
+    id: 'opp-tanga-clinker',
+    title: 'Green Clinker Calcination & Industrial Waste-Heat Power Plant',
+    sector: 'Manufacturing',
+    industry: 'Cement & Industrial Energy Efficiency',
+    companyOrSponsor: 'Tanga Industrial Development Consortium',
+    project: 'Tanga 1.5M MT Eco-Clinker & 12MW Waste Heat Recovery Line',
+    location: 'Pongwe Industrial District, Tanga',
+    region: 'Tanga',
+    mapCoords: { x: 67, y: 35 }, // Northern Coastal Node
+    capitalRequired: '$55.0 Million',
+    capitalAmountUsd: 55000000,
+    expectedReturn: '19.5% Projected IRR',
+    riskLevel: 'Moderate',
+    projectStage: 'Feasibility',
+    incentivesAvailable: 'Carbon credit generation eligibility (Gold Standard), 100% deduction on renewable and waste-heat recovery equipment, export port terminal access.',
+    summary: 'Modern clinker production line utilizing 12MW waste-heat recovery power generation, cutting energy production costs by 30% and feeding high-grade clinker to coastal and regional grinders.',
+    keyMilestones: [
+      'Detailed limestone resource geological drilling completed (proven 45-year reserve)',
+      'Bankable feasibility study finalized by leading international cement engineering firm',
+      'Letter of intent from Tanga Port for dedicated bulk maritime loading berth'
+    ]
+  },
+  {
+    id: 'opp-kigoma-logistics',
+    title: 'Kigoma Intermodal Port Logistics Terminal (DRC & Burundi Corridor)',
+    sector: 'Logistics',
+    industry: 'Cross-border Trade & Great Lakes Shipping',
+    companyOrSponsor: 'Central Corridor Transport Facilitation Agency & SPV',
+    project: 'Lake Tanganyika Modern Container & Mineral Transshipment Port',
+    location: 'Kigoma Port Free Trade Zone',
+    region: 'Kigoma',
+    mapCoords: { x: 12, y: 44 }, // Far West Lake Tanganyika
+    capitalRequired: '$28.0 Million',
+    capitalAmountUsd: 28000000,
+    expectedReturn: '23.5% Projected IRR',
+    riskLevel: 'Moderate',
+    projectStage: 'Shovel-Ready',
+    incentivesAvailable: 'Special Economic Zone status for Great Lakes trade, single customs declaration corridor, SGR railhead interchange rights.',
+    summary: 'With the SGR railway extending toward Kigoma, this dry port and barge terminal captures 1.5M MT of annual trade flowing between Dar es Salaam and the mineral-rich Eastern DRC provinces (Katanga, Kivu).',
+    keyMilestones: [
+      '20 hectares of shoreline land gazetted for dry port and mineral storage',
+      'SGR terminus station design integrated into the logistics park',
+      'Transit trade agreement ratified between Tanzania, DRC, and Burundi transport ministries'
+    ]
+  }
+];
+
+export const WEALTH_METRICS: WealthMetric[] = [
+  {
+    id: 'wm-capital-formation',
+    title: 'Domestic Capital Formation & Institutional Assets',
+    category: 'Capital Formation',
+    primaryValue: 'TZS 19.8 Trillion ($7.4B)',
+    metricLabel: 'Total Managed Pension & Social Security Funds (NSSF & PSSSF)',
+    growthYearOnYear: '+14.2% YoY growth',
+    geographicFocus: 'National / Dar es Salaam Financial Center',
+    description: 'Tanzania’s domestic institutional pension funds represent the primary anchor of national capital formation, deploying massive liquidity into government infrastructure bonds, DSE equities, real estate, and industrial agro-processing debt.',
+    keyEntitiesOrDrivers: ['NSSF (Private Sector Fund)', 'PSSSF (Public Service Social Security Fund)', 'Workers Compensation Fund (WCF)', 'UTT AMIS Asset Management']
+  },
+  {
+    id: 'wm-dse-equities',
+    title: 'Dar es Salaam Stock Exchange (DSE) Wealth Creation',
+    category: 'Equities (DSE)',
+    primaryValue: 'TZS 18.2 Trillion ($6.8B)',
+    metricLabel: 'Total DSE Market Capitalization (Domestic equities: TZS 11.5T)',
+    growthYearOnYear: '+16.8% TSR (Total Shareholder Return including Dividends)',
+    geographicFocus: 'Dar es Salaam Stock Exchange',
+    description: 'The DSE has generated extraordinary wealth for domestic retail and institutional investors over the past 5 years. Financial heavyweights CRDB Bank and NMB Bank maintain average dividend yields between 7.5% - 9.8%, significantly outperforming global emerging market benchmarks.',
+    keyEntitiesOrDrivers: ['NMB Bank PLC (Record profits exceeding TZS 540B)', 'CRDB Bank PLC', 'Tanzania Portland Cement PLC', 'Vodacom Tanzania', 'TBL (Tanzania Breweries)']
+  },
+  {
+    id: 'wm-real-estate',
+    title: 'Urban Real Estate & Infrastructure Wealth Corridors',
+    category: 'Real Estate Corridors',
+    primaryValue: '$3.8 Billion',
+    metricLabel: 'Asset Value along 3 Strategic Corridors',
+    growthYearOnYear: '+18.5% Capital Appreciation per annum',
+    geographicFocus: 'Dodoma Executive Corridor, Kigamboni Coastal Expansion, Bagamoyo Logistics Strip',
+    description: 'Wealth creation through land value uplift triggered by major government infrastructure investments: the Standard Gauge Railway stations, Kigamboni Nyerere Bridge, Dodoma Capital City relocation, and Dar Port expansion.',
+    keyEntitiesOrDrivers: ['National Housing Corporation (NHC)', 'Watumishi Housing', 'Private High-Net-Worth Family Offices', 'Commercial logistics parks along Morogoro Road']
+  },
+  {
+    id: 'wm-agri-wealth',
+    title: 'Value-Chain Value Retention (Raw to Processed)',
+    category: 'Value-Chain Wealth',
+    primaryValue: '$1.4 Billion / yr',
+    metricLabel: 'Value-Add Spread Captured Domestically',
+    growthYearOnYear: '+22.4% industrialization shift',
+    geographicFocus: 'Mtwara (Cashew), Njombe (Avocado/Tea), Kagera (Coffee/Sugar)',
+    description: 'The structural shift from exporting raw commodities to capturing the secondary and tertiary industrial margins. In cashew nuts alone, local processing captures a 3x value multiplier, turning seasonal farmgate earnings into year-round factory wages and manufacturing wealth.',
+    keyEntitiesOrDrivers: ['Export Trading Group (ETG)', 'MeTL Agro-Industries', 'Asas Dairies (Iringa)', 'Kilombero Sugar (Illovo/Morogoro)']
+  },
+  {
+    id: 'wm-private-capital',
+    title: 'Private Equity, Venture & DFI Capital Inflows',
+    category: 'Private Capital & LPs',
+    primaryValue: '$680 Million',
+    metricLabel: 'Active Private Equity & DFI Deployments (2024-2026)',
+    growthYearOnYear: '+28% YoY growth in institutional deal count',
+    geographicFocus: 'East Africa / Tanzania Growth Stage',
+    description: 'International development finance institutions (IFC, BII, FMO, AfDB) alongside regional private equity managers deploying equity and mezzanine debt into tech-enabled logistics, off-grid renewable mini-grids, clean energy, and healthcare networks.',
+    keyEntitiesOrDrivers: ['IFC (International Finance Corporation)', 'British International Investment (BII)', 'Adenia Partners', 'Norfund', 'Trade & Development Bank (TDB)']
+  }
+];
+
+export const RESEARCH_REPORTS: ResearchReport[] = [
+  {
+    id: 'rep-2026-outlook',
+    slug: 'tanzania-economic-outlook-2026',
+    title: 'Tanzania Investment & Economic Outlook 2026: The Infrastructure Dividend',
+    series: 'Tanzania Economic Outlook',
+    publishedDate: 'August 2026',
+    readTime: '24 min read',
+    pages: 48,
+    featured: true,
+    abstract: 'An exhaustive macroeconomic and investment teardown analyzing the convergence of the Standard Gauge Railway (SGR) operationalization, the Julius Nyerere 2,115 MW Hydropower commissioning, disciplined central bank monetary policy, and rising FDI inflows.',
+    keyFindings: [
+      'Real GDP projected to expand at 6.0% - 6.4% over FY2026/27, positioning Tanzania as the fastest growing major economy in the East African Community.',
+      'Headline inflation anchored at 3.2%, backed by food self-sufficiency and BoT monetary tightening.',
+      'SGR freight operations decrease container transit times from Dar Port to Lake Victoria from 4 days to under 18 hours, slashing logistics costs by 35%.',
+      'The commissioning of JNHPP adds 2,115 MW of baseload capacity, eliminating historic industrial load-shedding and lowering industrial electricity tariffs.'
+    ],
+    dataPointsCount: 65,
+    tableOfContents: [
+      'Executive Summary & Strategic Thesis',
+      'Macroeconomic Framework: GDP, Inflation & Fiscal Trajectory',
+      'Monetary Policy & Foreign Exchange Dynamics (BoT Gold Buying Program)',
+      'The Mega-Infrastructure Dividend: SGR Rail & JNHPP Hydropower',
+      'Key Sector Outlooks: Agriculture, Mining, Energy & Logistics',
+      'Capital Markets, DSE Performance & Foreign Investor Access',
+      'Risk Matrix & Regulatory Navigation for Institutional Investors'
+    ],
+    author: {
+      name: 'Dr. Josephat Mmbando',
+      title: 'Chief Economist & Head of Market Research, GVW',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80'
+    }
+  },
+  {
+    id: 'rep-agri-monitor',
+    slug: 'agricultural-value-chain-monitor-cashew-coffee',
+    title: 'Agricultural Value Chain Monitor: The $3.2B Agro-Industrial Leap',
+    series: 'Value-Chain Monitor',
+    publishedDate: 'July 2026',
+    readTime: '18 min read',
+    pages: 36,
+    featured: true,
+    abstract: 'A granular node-by-node financial and operational analysis of Tanzania’s top commercial crops: Cashew, Coffee, Cotton, and Horticulture. Pinpointing exact margin expansion levers and bottleneck intervention zones.',
+    keyFindings: [
+      'Domestic processing of raw cashew nuts (RCN) expands gross margins from $1.60/kg raw export to $7.40/kg export kernel—a 4.6x value capture.',
+      'Horticulture exports from the Southern Highlands (Iringa, Njombe) expanding at 16% CAGR, bolstered by bilateral phytosanitary protocols to China and India.',
+      'Warehouse Receipt System (WRS) digitalization via TMX exchange reduced agricultural loan default rates for commercial banks from 11.2% to 3.4%.'
+    ],
+    dataPointsCount: 42,
+    tableOfContents: [
+      'The Commercial Agribusiness Shift in Tanzania',
+      'Cashew Teardown: Why 85% Raw Export is an Unacceptable Economic Loss',
+      'Processing Economics: Capital Outlay vs Kernel Margin Curves',
+      'Horticulture & Cold Chain: The Southern Highlands Boom',
+      'Warehouse Receipt Financing & Commodity Exchange Integration',
+      'Top 10 Investment Opportunities in Agribusiness Processing'
+    ],
+    author: {
+      name: 'Grace Kimaro',
+      title: 'Senior Value-Chain Analyst, GVW Intelligence',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&q=80'
+    }
+  },
+  {
+    id: 'rep-wealth-capital',
+    slug: 'tanzania-wealth-capital-report-2026',
+    title: 'Tanzania Wealth & Capital Report: Institutional Allocations, Equities & Family Offices',
+    series: 'Wealth & Capital',
+    publishedDate: 'June 2026',
+    readTime: '16 min read',
+    pages: 32,
+    featured: false,
+    abstract: 'Investigating where wealth is created, accumulated, and redeployed across Tanzania and East Africa. Features detailed coverage of pension fund mandates, family conglomerates, and the DSE equity boom.',
+    keyFindings: [
+      'Institutional pension assets crossed TZS 19.8 Trillion ($7.4B), channeling over TZS 3.5 Trillion into corporate infrastructure bonds and strategic equities.',
+      'Banking sector dividends from CRDB and NMB returned over TZS 350 Billion to local shareholders in FY2025 alone.',
+      'High-net-worth family offices increasingly allocating toward commercial cold chain logistics, private healthcare networks, and industrial manufacturing.'
+    ],
+    dataPointsCount: 38,
+    tableOfContents: [
+      'Defining Wealth in an Industrializing Economy',
+      'Institutional Capital: Pension Fund Mandates & Asset Allocation Breakdown',
+      'The DSE Renaissance: Dividend Yields, Valuations & Liquidity Profiles',
+      'Family Conglomerates: Succession, Diversification & Regional Expansion',
+      'Private Equity & DFI Syndications in East Africa',
+      'Strategic Real Estate Corridors: Dodoma, Dar North & Bagamoyo'
+    ],
+    author: {
+      name: 'Tariq Al-Mansoor',
+      title: 'Director of Institutional Wealth Research, GVW',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&auto=format&fit=crop&q=80'
+    }
+  },
+  {
+    id: 'rep-mining-gas',
+    slug: 'tanzania-mining-critical-minerals-lng-brief',
+    title: 'Mining, Critical Minerals & Energy Teardown: Gold, Graphite, Nickel & LNG',
+    series: 'Sector Intelligence',
+    publishedDate: 'May 2026',
+    readTime: '22 min read',
+    pages: 44,
+    featured: false,
+    abstract: 'Detailed assessment of Tanzania’s mineral endowment. Covers the Bank of Tanzania gold reserve buying strategy, the $42B Lindi LNG project roadmap, and the Kabanga Nickel and Lindi Graphite transition mineral corridors.',
+    keyFindings: [
+      'Bank of Tanzania’s domestic gold reserve purchase initiative absorbed over 6 MT of domestic gold bullion in 12 months, strengthening external shock resilience.',
+      'Lindi graphite assets positioned to supply over 10% of non-Chinese battery-grade spherical graphite to North American and European EV battery makers by 2028.',
+      'Host Government Agreement (HGA) for Lindi LNG advancing toward Final Investment Decision (FID), targeting 10M MT/yr export capacity.'
+    ],
+    dataPointsCount: 50,
+    tableOfContents: [
+      'Tanzania as an Indispensable Global Resource Hub',
+      'Gold Sector Teardown: Industrial Majors, Refineries & BoT Reserves',
+      'Critical Transition Minerals: Kabanga Nickel & Lindi Graphite',
+      'Natural Gas & The Lindi LNG Project: Economics & Domestic Gas Linkages',
+      'Regulatory Framework: The Mining Act & Local Content Mandates'
+    ],
+    author: {
+      name: 'Dr. Josephat Mmbando',
+      title: 'Chief Economist & Head of Market Research, GVW',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80'
+    }
+  }
+];
+
+export const TANZANIA_REGIONS: TanzaniaRegion[] = [
+  {
+    id: 'reg-dar',
+    name: 'Dar es Salaam',
+    hubCity: 'Dar es Salaam (Commercial & Maritime Capital)',
+    coordinates: { x: 74, y: 53 },
+    gdpShare: '17.2% of National GDP',
+    population: '5.8 Million',
+    primaryPillars: ['Maritime Port Logistics', 'FMCG Manufacturing', 'Banking & Financial HQ', 'Tech & Services'],
+    opportunitiesCount: 14,
+    overview: 'The commercial, financial, and logistical nerve center of East Africa. Handles over 90% of Tanzania’s international maritime trade and serves 6 landlocked nations (DRC, Rwanda, Burundi, Uganda, Zambia, Malawi).',
+    zone: 'Coastal Maritime & Financial Hub',
+    keyProjects: ['Dar Port Gateway Expansion (Berths 1-7)', 'Kurasini Logistics City', 'SGR Central Passenger & Cargo Hub'],
+    infrastructure: ['Dar es Salaam Seaport (18M MT capacity)', 'Julius Nyerere International Airport (JNIA Terminal 3)', 'Standard Gauge Railway (SGR Phase 1)'],
+    dominantCommodities: ['Container Cargo', 'Processed Consumer Goods', 'Petroleum Logistics', 'Automotive Assembly']
+  },
+  {
+    id: 'reg-dodoma',
+    name: 'Dodoma',
+    hubCity: 'Dodoma (National Constitutional Capital)',
+    coordinates: { x: 48, y: 48 },
+    gdpShare: '5.1% (Fastest Growing Urban Economy)',
+    population: '3.1 Million',
+    primaryPillars: ['Government Administration', 'Commercial Real Estate', 'Viticulture (Wine)', 'Renewable Solar Energy'],
+    opportunitiesCount: 8,
+    overview: 'The constitutional capital city. With all executive ministries, parliament, and diplomatic corps permanently installed, Dodoma is experiencing unprecedented construction, hospitality, cold storage, and services expansion.',
+    zone: 'Central Administrative & SGR Transit Corridor',
+    keyProjects: ['Msalato International Airport ($330M)', 'Government City Ihumwa Expansion', '150MW Kishapu Solar Grid Injection'],
+    infrastructure: ['SGR Phase 2 Main Interchange Terminal', 'Trans-Africa Highway Corridors', 'Nyerere Square Commercial Center'],
+    dominantCommodities: ['Grape & Wine Processing', 'Sunflower Oil', 'Commercial Construction', 'Government Tech Services']
+  },
+  {
+    id: 'reg-mwanza',
+    name: 'Mwanza',
+    hubCity: 'Mwanza (The Rock City & Lake Hub)',
+    coordinates: { x: 32, y: 22 },
+    gdpShare: '9.4% of National GDP',
+    population: '3.7 Million',
+    primaryPillars: ['Lake Victoria Fisheries', 'Gold Mining & Refining', 'Cotton Agro-processing', 'Great Lakes Trade'],
+    opportunitiesCount: 11,
+    overview: 'The economic capital of the Lake Victoria basin. Home to the Mwanza Gold Refinery, Nile perch fish filleting plants, and the northern SGR railway terminus connecting trade to Uganda and Kenya.',
+    zone: 'Lake Victoria Gold & Fisheries Basin',
+    keyProjects: ['JP Magufuli (Kigongo-Busisi) 3.2km Bridge', 'Mwanza Gold Refinery Modernization', 'Lake Victoria Cold-Chain Fishery Hub'],
+    infrastructure: ['Mwanza International Airport', 'Lake Victoria Port Pier', 'SGR Section 5 (Isaka-Mwanza)'],
+    dominantCommodities: ['Nile Perch Fillets', 'Refined Bullion Gold', 'Seed Cotton & Lint', 'Horticultural Produce']
+  },
+  {
+    id: 'reg-arusha',
+    name: 'Arusha',
+    hubCity: 'Arusha (Geneva of Africa & Safari Capital)',
+    coordinates: { x: 57, y: 22 },
+    gdpShare: '7.8% of National GDP',
+    population: '2.4 Million',
+    primaryPillars: ['High-End Safari Tourism', 'Export Horticulture (Avocados, Flowers)', 'Gemstones (Tanzanite)', 'EAC Headquarters'],
+    opportunitiesCount: 12,
+    overview: 'Headquarters of the East African Community (EAC) and premier gateway to the Serengeti, Ngorongoro, and Kilimanjaro tourism circuits. High-yielding export horticulture and world-exclusive Tanzanite trade hub.',
+    zone: 'Northern Safari & Agro-Export Circuit',
+    keyProjects: ['Mererani Tanzanite Trading Center', 'Cool-Chain Avocado Cargo Terminal (KIA)', 'Arusha Eco-Tourism Lodge Developments'],
+    infrastructure: ['Kilimanjaro International Airport (KIA)', 'Namanga One-Stop Border Post to Kenya', 'Arusha Ring Road Bypass'],
+    dominantCommodities: ['Hass Avocados', 'Cut Flowers (Roses)', 'Tanzanite & Tsavorite Gemstones', 'Specialty Coffee']
+  },
+  {
+    id: 'reg-tanga',
+    name: 'Tanga',
+    hubCity: 'Tanga Port City',
+    coordinates: { x: 70, y: 32 },
+    gdpShare: '6.2% of National GDP',
+    population: '2.6 Million',
+    primaryPillars: ['Cement Manufacturing', 'Sisal Agro-processing', 'Tanga Maritime Port', 'EACOP Crude Oil Pipeline Terminus'],
+    opportunitiesCount: 7,
+    overview: 'Historic northern seaport and heavy manufacturing powerhouse. Marine terminal point of the $5B East African Crude Oil Pipeline (EACOP) from Uganda, surrounded by sisal estates and cement mega-plants.',
+    zone: 'Tanga Industrial, Port & EACOP Energy Hub',
+    keyProjects: ['EACOP Chongoleani Marine Jetty & Storage', 'Tanga Port Dredging to 13m Draft', 'Sisal Fiber Biogas & Automotive Composites'],
+    infrastructure: ['Tanga Deepwater Marine Port', 'Tanga-Moshi Modernized Railway Line', 'Pangani Highway Interlink'],
+    dominantCommodities: ['Portland Cement & Clinker', 'Sisal Fiber & Twine', 'Crude Petroleum Transshipment', 'Fertilizer']
+  },
+  {
+    id: 'reg-mbeya',
+    name: 'Mbeya',
+    hubCity: 'Mbeya (Southern Highlands Commercial Hub)',
+    coordinates: { x: 36, y: 72 },
+    gdpShare: '6.9% of National GDP',
+    population: '2.7 Million',
+    primaryPillars: ['Highland Agriculture (Avocado, Potatoes)', 'Specialty Tea & Coffee', 'Coal & Rare Earth Mining', 'TAZARA Corridor Logistics'],
+    opportunitiesCount: 9,
+    overview: 'The agricultural powerhouse and logistics gateway to the Southern African Development Community (SADC). Vital transit intersection connecting Tanzania to Zambia, Malawi, and the DRC through Tunduma border post.',
+    zone: 'Southern Highlands Breadbasket & SADC Gateway',
+    keyProjects: ['Songwe International Airport Cargo Expansion', 'Rukwa Coal-to-Power Project', 'Southern Highlands Cold-Chain Fruit Hub'],
+    infrastructure: ['TAZARA Railway Line & Workshops', 'Songwe International Airport', 'TanZam Highway Corridor'],
+    dominantCommodities: ['Hass Avocados', 'Specialty Arabica Coffee', 'Highland Potatoes', 'Coal & Industrial Minerals']
+  },
+  {
+    id: 'reg-mtwara',
+    name: 'Mtwara',
+    hubCity: 'Mtwara Port City',
+    coordinates: { x: 80, y: 86 },
+    gdpShare: '4.8% (Surging on Gas & Cashew Processing)',
+    population: '1.6 Million',
+    primaryPillars: ['Raw & Processed Cashew', 'Offshore Natural Gas', 'Deepwater Port Services', 'Dangote Cement Complex'],
+    opportunitiesCount: 9,
+    overview: 'The epicentre of Tanzania’s cashew nut harvest and offshore natural gas production. Features a modern deepwater port with 400,000 MT container handling capacity and vast Special Economic Zones.',
+    zone: 'Southern Energy, Cashew & Deepwater Port Corridor',
+    keyProjects: ['Tanzania LNG $42B Project Gas Hub', 'Mtwara Cashew Processing Park', 'Mtwara-Lindi Industrial Gas Grid'],
+    infrastructure: ['Mtwara Deepwater Port (13.5m draft)', 'Madimba Gas Processing Plant', 'Dangote 3.0MT Cement Terminal'],
+    dominantCommodities: ['Cashew Kernels (W320/W240)', 'Liquefied Natural Gas (LNG)', 'Clinker & Cement', 'Graphite Concentrates']
+  },
+  {
+    id: 'reg-morogoro',
+    name: 'Morogoro',
+    hubCity: 'Morogoro (Agro-Processing Capital)',
+    coordinates: { x: 62, y: 55 },
+    gdpShare: '5.8% of National GDP',
+    population: '3.2 Million',
+    primaryPillars: ['Sugar Cane Processing', 'Rice & Grain Milling', 'SGR Junction Hub', 'Julius Nyerere Hydropower (2,115MW)'],
+    opportunitiesCount: 8,
+    overview: 'The primary agricultural basin and crossroad connecting Dar es Salaam to central, western, and southern regions. Anchors major sugar estates in Kilombero and the mega 2,115MW Nyerere Hydroelectric Dam.',
+    zone: 'Central Agro-Industrial & Energy Basin',
+    keyProjects: ['Kilombero Sugar $45M Expansion', 'Rufiji JNHPP 2,115MW Grid Integration', 'Morogoro Agribusiness Park'],
+    infrastructure: ['SGR Phase 1 High-Speed Station', 'Tanzam & Central Highway Junction', 'Kilombero Bridge & Railway Spur'],
+    dominantCommodities: ['Cane Sugar', 'Paddy & Milled Rice', 'Renewable Hydro Electricity', 'Edible Vegetable Oil']
+  },
+  {
+    id: 'reg-kigoma',
+    name: 'Kigoma',
+    hubCity: 'Kigoma Port',
+    coordinates: { x: 12, y: 44 },
+    gdpShare: '3.4% of National GDP',
+    population: '2.5 Million',
+    primaryPillars: ['Cross-Border Lake Trade to DRC', 'Palm Oil Cultivation & Refining', 'Great Lakes Multimodal Logistics', 'Fisheries'],
+    opportunitiesCount: 6,
+    overview: 'Strategic western gateway on Lake Tanganyika, directly opposite the mineral-rich eastern DRC provinces of South Kivu and Tanganyika. Connected by the SGR expansion to serve as the prime transshipment port for Central Africa.',
+    zone: 'Western Great Lakes Transshipment Gateway',
+    keyProjects: ['Kigoma Port Modernization & Container Berth', 'Kigoma Special Economic Zone (KSEZ)', 'Palm Oil Commercial Plantations'],
+    infrastructure: ['Port of Kigoma on Lake Tanganyika', 'SGR Section 6 (Uvinza-Musongati to Burundi)', 'Kigoma Airport Runway Extension'],
+    dominantCommodities: ['Crude & Refined Palm Oil', 'Lake Tanganyika Dagaa Fish', 'Transit Cement & Petroleum to DRC', 'Cassava Flour']
+  },
+  {
+    id: 'reg-kilimanjaro',
+    name: 'Kilimanjaro',
+    hubCity: 'Moshi (Coffee & Eco-Tourism Capital)',
+    coordinates: { x: 62, y: 22 },
+    gdpShare: '4.9% of National GDP',
+    population: '1.9 Million',
+    primaryPillars: ['Mount Kilimanjaro Eco-Tourism', 'Premium Arabica Coffee', 'Beer & Beverage Production', 'Commercial Education'],
+    opportunitiesCount: 7,
+    overview: 'Situated on the fertile volcanic slopes of Africa’s highest peak. Center of Tanzania’s historic Arabica coffee auctions, thriving mountain tourism, and major commercial beverage bottling plants.',
+    zone: 'Northern Volcanic Agro & Alpine Tourism',
+    keyProjects: ['Moshi Coffee Exchange Digitization', 'Mount Kilimanjaro Cable Car Feasibility', 'Holili One-Stop Border Post Upgrade'],
+    infrastructure: ['Kilimanjaro International Airport (KIA)', 'Moshi Railway Terminus', 'Arusha-Himo-Holili Highway to Kenya'],
+    dominantCommodities: ['AA Grade Arabica Coffee', 'Bananas & Plantains', 'Safari Expeditions & Hospitality', 'Bottled Mineral Spring Water']
+  },
+  {
+    id: 'reg-geita',
+    name: 'Geita',
+    hubCity: 'Geita (Gold Mining Capital of East Africa)',
+    coordinates: { x: 25, y: 26 },
+    gdpShare: '5.2% (Driven by Tier-1 Gold Output)',
+    population: '2.9 Million',
+    primaryPillars: ['Large-Scale Gold Mining', 'Artisanal Gold Refining & Trading', 'Cotton Farming', 'Forestry & Wood Products'],
+    opportunitiesCount: 8,
+    overview: 'The heart of Tanzania’s Greenstone gold belt. Anchored by the world-class AngloGold Ashanti Geita Gold Mine, Geita processes significant commercial bullion and hosts the nation’s largest mineral trading exchange.',
+    zone: 'Lake Victoria Greenstone Gold Belt',
+    keyProjects: ['Geita Mineral Trading Market Hub', 'Geita-Kahama Mining Services Cluster', 'Lake Victoria Water Pipeline to Mines'],
+    infrastructure: ['Geita Airstrip & Helipads', 'High-Voltage 220kV Grid Connection', 'Mwanza-Geita Paved Corridor'],
+    dominantCommodities: ['Gold Dore & Bullion (99.9% fine)', 'Mining Consumables & Heavy Machinery', 'Seed Cotton', 'Timber']
+  },
+  {
+    id: 'reg-zanzibar',
+    name: 'Zanzibar (Unguja & Pemba)',
+    hubCity: 'Stone Town & Fumba Free Zone',
+    coordinates: { x: 78, y: 48 },
+    gdpShare: '3.6% (Autonomous Island Economy)',
+    population: '1.9 Million',
+    primaryPillars: ['Blue Economy & Marine Aquaculture', 'Global Clove Spice Trade', 'Luxury Island Tourism', 'Offshore Financial Services & Fumba Tech'],
+    opportunitiesCount: 10,
+    overview: 'Semi-autonomous archipelago pioneering Africa’s premier Blue Economy strategy. World-renowned for clove and vanilla spices, UNESCO World Heritage tourism in Stone Town, and the Fumba Special Economic Zone.',
+    zone: 'Zanzibar Blue Economy & Marine Services',
+    keyProjects: ['Mangapwani Multi-Purpose Mega Port ($400M)', 'Fumba Town Smart Economic Zone', 'Pemba Clove Oil Refinery Modernization'],
+    infrastructure: ['Abeid Amani Karume International Airport (Terminal 2 & 3)', 'Malindi Maritime Port', 'Subsea Power & Fiber Cables to Mainland'],
+    dominantCommodities: ['Whole Cloves & Clove Stem Oil', 'Seaweed (Kappaphycus/Eucheuma)', 'High-End Boutique Tourism', 'Marine Tuna & Kingfish']
+  }
+];

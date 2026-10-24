@@ -1,0 +1,6 @@
+{
+  "name": "GVW Intelligence — Growth Value-Chain & Wealth Intelligence",
+  "description": "Structured market intelligence on Tanzania and African economies, connecting macroeconomic data, value chains, companies, investment opportunities, and wealth creation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
